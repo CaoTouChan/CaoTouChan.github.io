@@ -149,6 +149,13 @@
   <ol class="post-list">
     
     <li>
+      <h2 class="post-list__post-title post-title"><a href="/2019/06/analyzer/" title="访问 Elasticsearch 实战（06）分词器 Analyzer">Elasticsearch 实战（06）分词器 Analyzer</a></h2>
+      <p class="excerpt">概要分词器，就是讲文本转换成一系列单词的工具。分词器由三部分组成：      Character Filters ：针对原始文本，去除 HTML        Tokenizer ： 按照规则切分单词        Token Filters ： 去除停用词、大小写改动之类  分类ES 有内置的分词器，也可以自行定制分词器。其内置了多种分词器，比如 ：  Simple Analyzer – 按照非字母切分（符号被过滤），小写处理  Stop Analyzer – 小写处理，停用词过滤（th...&hellip;</p>
+      <div class="post-list__meta"><time datetime="2019-06-30 13:30:11 +0800" class="post-list__meta--date date">2019-06-30</time> &#8226; <span class="post-list__meta--tags tags"></span><a class="btn-border-small" href=/2019/06/analyzer/>继续阅读</a></div>
+      <hr class="post-list__divider" />
+    </li>
+    
+    <li>
       <h2 class="post-list__post-title post-title"><a href="/2019/06/ES-inverted-index/" title="访问 Elasticsearch 实战（05）倒排索引">Elasticsearch 实战（05）倒排索引</a></h2>
       <p class="excerpt">概要  Elasticsearch 使用一种称为 倒排索引 的结构，它适用于快速的全文搜索。一个倒排索引由文档中所有不重复词的列表构成，对于其中每个词，有一个包含它的文档列表。比如，对于搜索引擎而言，正排索引就是文档 id 到单词的关联，而倒排索引就是单词到文档 id 的关联。可以为 ES 的文档字段指定哪些不进行索引，这样做可以节省空间，但也意味着这个字段无法被搜索。核心组成倒排索引包含两部分：      单词词典 （ Term Dictionary ）：记录单词以及单词到倒排列表的关系...&hellip;</p>
       <div class="post-list__meta"><time datetime="2019-06-30 13:02:11 +0800" class="post-list__meta--date date">2019-06-30</time> &#8226; <span class="post-list__meta--tags tags"></span><a class="btn-border-small" href=/2019/06/ES-inverted-index/>继续阅读</a></div>
@@ -208,13 +215,6 @@
       <h2 class="post-list__post-title post-title"><a href="/2019/06/alg-skiplist/" title="访问 数据结构和算法（06）：跳表">数据结构和算法（06）：跳表</a></h2>
       <p class="excerpt">  结构：链表 + 多级索引  时间复杂度：O(log n)考虑下 查询 数据的时间复杂度。第 k 级索引的节点数是第 k-1 级的 1/2 ，那第 k 级索引的节点个数就是  。假设索引有 h 级，最高级索引有 2 个节点，那么有 ，即  。故包含原始链表层整个高度是 。如果每层遍历 m 个节点，则跳表中查询一个数据的时间复杂度就是 。按照上图的结构来讲，每层只需要遍历 3 个节点。（假设我们要查找的数据是 x，在第 k 级索引中，我们遍历到 y 结点之后，发现 x 大于 y，小于后面的...&hellip;</p>
       <div class="post-list__meta"><time datetime="2019-06-05 00:02:06 +0800" class="post-list__meta--date date">2019-06-05</time> &#8226; <span class="post-list__meta--tags tags"></span><a class="btn-border-small" href=/2019/06/alg-skiplist/>继续阅读</a></div>
-      <hr class="post-list__divider" />
-    </li>
-    
-    <li>
-      <h2 class="post-list__post-title post-title"><a href="/2019/06/alg-sort/" title="访问 数据结构和算法（04）：排序">数据结构和算法（04）：排序</a></h2>
-      <p class="excerpt">各类排序算法图解冒泡排序插入排序选择排序归并排序快速排序桶排序计数排序基数排序排序算法比较            算法      时间复杂度（平均）      时间复杂度（最好）      时间复杂度（最坏）      基于比较      原地排序      是否稳定                  冒泡                        是      是      是              插入                        是      是      ...&hellip;</p>
-      <div class="post-list__meta"><time datetime="2019-06-05 00:02:04 +0800" class="post-list__meta--date date">2019-06-05</time> &#8226; <span class="post-list__meta--tags tags"></span><a class="btn-border-small" href=/2019/06/alg-sort/>继续阅读</a></div>
       <hr class="post-list__divider" />
     </li>
     

@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <title>Elasticsearch 实战（06）分词器 Analyzer</title>
+  <meta name="description" content="概要">
+  <meta name="author" content="Wei Wang">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Elasticsearch 实战（06）分词器 Analyzer">
+  <meta name="twitter:description" content="概要">
+  
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Elasticsearch 实战（06）分词器 Analyzer">
+  <meta property="og:description" content="概要">
+  
+  <link rel="icon" type="image/png" href="/assets/images/favicon.png" />
+  <link href="/assets/images/favicon.png" rel="shortcut icon" type="image/png">
+  
+  <link rel="stylesheet" href="/css/main.css">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+
+  <link rel="canonical" href="http://localhost:4000/2019/06/analyzer/">
+  <link rel="alternate" type="application/rss+xml" title="陈草头" href="http://localhost:4000/feed.xml">
+  
+  <meta name="google-site-verification" content="1-1ZlHoRvM0T2FqPbW2S-qLgYXN6rsn52kErlMPd_gw" />
+
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+
+  <!-- 数学公式 -->
+<script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+      inlineMath: [['$','$']]
+    }
+  });
+</script>
+
+
+  
+</head>
+
+
+  <body>
+
+    <span class="mobile btn-mobile-menu">
+        <i class="fa fa-list btn-mobile-menu__icon"></i>
+        <i class="fa fa-angle-up btn-mobile-close__icon hidden"></i>
+    </span>
+    
+    <header class="panel-cover panel-cover--collapsed" style="background-image: url('/assets/images/background-cover.jpg')">
+  <div class="panel-main">
+
+    <div class="panel-main__inner panel-inverted">
+    <div class="panel-main__content">
+
+        <a href="/#blog" title="前往 陈草头 的主页" class="blog-button"><img src="/assets/images/avatar.jpg" width="80" alt="陈草头 logo" class="panel-cover__logo logo" /></a>
+        <h1 class="panel-cover__title panel-title"><a href="/#blog" title="link to homepage for 陈草头" class="blog-button">陈草头</a></h1>
+        
+        <span class="panel-cover__subtitle panel-subtitle">越名教而任自然</span>
+        
+        <hr class="panel-cover__divider" />
+        <p class="panel-cover__description">90 后 | 广东人 | 现居住于帝都 | 算法攻城狮</p>
+        <hr class="panel-cover__divider panel-cover__divider--secondary" />
+        
+        <!-- 
+        <p class="panel-cover__description"><a href="https://caotouchan.github.io" target="_blank">我的主页</a></p>
+         -->
+        
+        <div class="navigation-wrapper">
+          <div>
+            <nav class="cover-navigation cover-navigation--primary">
+              <ul class="navigation">
+                <li class="navigation__item"><a href="/#blog" title="访问博客" class="blog-button">博客</a></li>
+                
+              </ul>
+            </nav>
+          </div>
+          
+          <div><nav class="cover-navigation navigation--social">
+  <ul class="navigation">
+
+  
+  <!-- Weibo -->
+  <li class="navigation__item">
+    <a href="http://weibo.com/lookka520" title="@lookka520 的微博" target="_blank">
+      <i class='social fa fa-weibo'></i>
+      <span class="label">Weibo</span>
+    </a>
+  </li>
+  
+
+  
+  <!-- Github -->
+  <li class="navigation__item">
+    <a href="https://github.com/caotouchan" title="@caotouchan 的 Github" target="_blank">
+      <i class='social fa fa-github'></i>
+      <span class="label">Github</span>
+    </a>
+  </li>
+  
+  
+  
+
+  
+
+  <!-- RSS -->
+  <li class="navigation__item">
+    <a href="/feed.xml" rel="author" title="RSS" target="_blank">
+      <i class='social fa fa-rss'></i>
+      <span class="label">RSS</span>
+    </a>
+  </li>
+
+  
+  <!-- Email -->
+  <li class="navigation__item">
+    <a href="mailto:caotouchan@outlook.com" title="Contact me">
+      <i class='social fa fa-envelope'></i>
+      <span class="label">Email</span>
+    </a>
+  </li>
+  
+
+  </ul>
+</nav>
+</div>
+        </div>
+      </div>
+    </div>
+    
+    
+    <div class="panel-cover--overlay cover-red"></div>
+    
+  </div>
+</header>
+
+
+    <div class="content-wrapper">
+        <div class="content-wrapper__inner">
+            <article class="post-container post-container--single" itemscope itemtype="http://schema.org/BlogPosting">
+  <header class="post-header">
+    <div class="post-meta">
+      <time datetime="2019-06-30 13:30:11 +0800" itemprop="datePublished" class="post-meta__date date">2019-06-30</time> &#8226; <span class="post-meta__tags tags"></span>
+    </div>
+    <h1 class="post-title">Elasticsearch 实战（06）分词器 Analyzer</h1>
+  </header>
+
+  <section class="post">
+    <h2 id="概要">概要</h2>
+
+<p>分词器，就是讲文本转换成一系列单词的工具。</p>
+
+<p>分词器由三部分组成：</p>
+
+<ul>
+  <li>
+    <p>Character Filters ：针对原始文本，去除 HTML</p>
+  </li>
+  <li>
+    <p>Tokenizer ： 按照规则切分单词</p>
+  </li>
+  <li>
+    <p>Token Filters ： 去除停用词、大小写改动之类</p>
+  </li>
+</ul>
+
+<p><img src="http://ww2.sinaimg.cn/large/006tNc79ly1g4j6mqzjqzj30l706mdfv.jpg" alt="" /></p>
+
+<h2 id="分类">分类</h2>
+
+<p>ES 有内置的分词器，也可以自行定制分词器。其内置了多种分词器，比如 ：</p>
+
+<ul>
+  <li>Simple Analyzer – 按照非字母切分（符号被过滤），小写处理</li>
+  <li>Stop Analyzer – 小写处理，停用词过滤（the，a，is）</li>
+  <li>Whitespace Analyzer – 按照空格切分，不转小写</li>
+  <li>Keyword Analyzer – 不分词，直接将输入当作输出</li>
+  <li>Patter Analyzer – 正则表达式，默认 \W+ (非字符分隔)</li>
+  <li>Language – 提供了30多种常见语言的分词器</li>
+</ul>
+
+<p>示例代码如下：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">//</span><span class="err">查看不同的</span><span class="n">analyzer</span><span class="err">的效果</span>
+<span class="o">//</span><span class="n">standard</span>
+<span class="n">GET</span> <span class="n">_analyze</span>
+<span class="p">{</span>
+  <span class="s">"analyzer"</span><span class="p">:</span> <span class="s">"standard"</span><span class="p">,</span>
+  <span class="s">"text"</span><span class="p">:</span> <span class="s">"2 running Quick brown-foxes leap over lazy dogs in the summer evening."</span>
+<span class="p">}</span>
+
+<span class="o">//</span><span class="n">simpe</span>
+<span class="n">GET</span> <span class="n">_analyze</span>
+<span class="p">{</span>
+  <span class="s">"analyzer"</span><span class="p">:</span> <span class="s">"simple"</span><span class="p">,</span>
+  <span class="s">"text"</span><span class="p">:</span> <span class="s">"2 running Quick brown-foxes leap over lazy dogs in the summer evening."</span>
+<span class="p">}</span>
+
+
+<span class="n">GET</span> <span class="n">_analyze</span>
+<span class="p">{</span>
+  <span class="s">"analyzer"</span><span class="p">:</span> <span class="s">"stop"</span><span class="p">,</span>
+  <span class="s">"text"</span><span class="p">:</span> <span class="s">"2 running Quick brown-foxes leap over lazy dogs in the summer evening."</span>
+<span class="p">}</span>
+
+
+<span class="o">//</span><span class="n">stop</span>
+<span class="n">GET</span> <span class="n">_analyze</span>
+<span class="p">{</span>
+  <span class="s">"analyzer"</span><span class="p">:</span> <span class="s">"whitespace"</span><span class="p">,</span>
+  <span class="s">"text"</span><span class="p">:</span> <span class="s">"2 running Quick brown-foxes leap over lazy dogs in the summer evening."</span>
+<span class="p">}</span>
+
+<span class="o">//</span><span class="n">keyword</span>
+<span class="n">GET</span> <span class="n">_analyze</span>
+<span class="p">{</span>
+  <span class="s">"analyzer"</span><span class="p">:</span> <span class="s">"keyword"</span><span class="p">,</span>
+  <span class="s">"text"</span><span class="p">:</span> <span class="s">"2 running Quick brown-foxes leap over lazy dogs in the summer evening."</span>
+<span class="p">}</span>
+
+<span class="n">GET</span> <span class="n">_analyze</span>
+<span class="p">{</span>
+  <span class="s">"analyzer"</span><span class="p">:</span> <span class="s">"pattern"</span><span class="p">,</span>
+  <span class="s">"text"</span><span class="p">:</span> <span class="s">"2 running Quick brown-foxes leap over lazy dogs in the summer evening."</span>
+<span class="p">}</span>
+
+
+<span class="o">//</span><span class="n">english</span>
+<span class="n">GET</span> <span class="n">_analyze</span>
+<span class="p">{</span>
+  <span class="s">"analyzer"</span><span class="p">:</span> <span class="s">"english"</span><span class="p">,</span>
+  <span class="s">"text"</span><span class="p">:</span> <span class="s">"2 running Quick brown-foxes leap over lazy dogs in the summer evening."</span>
+<span class="p">}</span>
+
+
+<span class="n">POST</span> <span class="n">_analyze</span>
+<span class="p">{</span>
+  <span class="s">"analyzer"</span><span class="p">:</span> <span class="s">"icu_analyzer"</span><span class="p">,</span>
+  <span class="s">"text"</span><span class="p">:</span> <span class="s">"他说的确实在理”"</span>
+<span class="p">}</span>
+
+
+<span class="n">POST</span> <span class="n">_analyze</span>
+<span class="p">{</span>
+  <span class="s">"analyzer"</span><span class="p">:</span> <span class="s">"standard"</span><span class="p">,</span>
+  <span class="s">"text"</span><span class="p">:</span> <span class="s">"他说的确实在理”"</span>
+<span class="p">}</span>
+
+
+<span class="n">POST</span> <span class="n">_analyze</span>
+<span class="p">{</span>
+  <span class="s">"analyzer"</span><span class="p">:</span> <span class="s">"icu_analyzer"</span><span class="p">,</span>
+  <span class="s">"text"</span><span class="p">:</span> <span class="s">"这个苹果不大好吃"</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="参考资料和相关阅读">参考资料和相关阅读</h2>
+
+<ul>
+  <li>
+    <p>Elasticsearch核心技术与实战 （极客时间 阮一鸣） <a href="https://time.geekbang.org/course/intro/197">https://time.geekbang.org/course/intro/197</a></p>
+  </li>
+  <li>
+    <p>Anatomy of an analyzer <a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/analyzer-anatomy.html">https://www.elastic.co/guide/en/elasticsearch/reference/current/analyzer-anatomy.html</a></p>
+  </li>
+</ul>
+
+
+  </section>
+</article>
+
+<section class="read-more">
+   
+   
+   
+   
+   <div class="read-more-item">
+       <span class="read-more-item-dim">更早的文章</span>
+       <h2 class="post-list__post-title post-title"><a href="/2019/06/ES-inverted-index/" title="link to Elasticsearch 实战（05）倒排索引">Elasticsearch 实战（05）倒排索引</a></h2>
+       <p class="excerpt">概要  Elasticsearch 使用一种称为 倒排索引 的结构，它适用于快速的全文搜索。一个倒排索引由文档中所有不重复词的列表构成，对于其中每个词，有一个包含它的文档列表。比如，对于搜索引擎而言，正排索引就是文档 id 到单词的关联，而倒排索引就是单词到文档 id 的关联。可以为 ES 的文档字段指定哪些不进行索引，这样做可以节省空间，但也意味着这个字段无法被搜索。核心组成倒排索引包含两部分：      单词词典 （ Term Dictionary ）：记录单词以及单词到倒排列表的关系...&hellip;</p>
+       <div class="post-list__meta"><time datetime="2019-06-30 13:02:11 +0800" class="post-list__meta--date date">2019-06-30</time> &#8226; <span class="post-list__meta--tags tags"></span><a class="btn-border-small" href=/2019/06/ES-inverted-index/>继续阅读</a></div>
+   </div>
+   
+</section>
+
+<section class="post-comments">
+  
+
+  
+
+  <!-- Gitalk 评论 start  -->
+  
+    <!-- Link Gitalk 的支持文件  -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+  <script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+
+    <div id="gitalk-container"></div>
+
+    <script type="text/javascript">
+      var gitalk = new Gitalk({
+        clientID: '6005df5e831456f4482b',
+        clientSecret: 'ffc57d242198e14cdb68b7457a765d0b719415fb',
+        repo: 'caotouchan.github.io',
+        owner: 'CaoTouChan',
+        admin: ['CaoTouChan'],
+        id: window.location.pathname,
+      });
+      gitalk.render('gitalk-container');
+    </script>
+  
+  <!-- Gitalk end -->
+</section>
+
+
+            <section class="footer">
+    <footer>
+    	<span class="footer__copyright">本站点采用<a href="http://creativecommons.org/licenses/by-nc-sa/4.0/">知识共享 署名-非商业性使用-相同方式共享 4.0 国际 许可协议</a></span>
+        <span class="footer__copyright">本站由 <a href="https://caotouchan.github.io">@caotouchan</a> 创建，采用 <a href="https://github.com/onevcat/vno-jekyll">Vno - Jekyll</a> 作为主题，您可以在 GitHub 找到<a href="https://github.com/CaoTouChan/caotouchan.github.io">本站源码</a> - &copy; 2019</span>
+    </footer>
+</section>
+
+        </div>
+    </div>
+    
+    <script type="text/javascript" src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+
+<script type="text/javascript" src="/js/main.js"></script>
+
+
+
+    
+  </body>
+
+</html>
