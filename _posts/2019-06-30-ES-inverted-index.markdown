@@ -2,6 +2,7 @@
 layout: post
 title: Elasticsearch 实战（05）倒排索引
 date: 2019-06-30 14:02:11.000000000 +09:00
+tags: 倒排索引 全文搜索
 ---
 
 ## 概要
