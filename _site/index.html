@@ -70,7 +70,7 @@
         <hr class="panel-cover__divider panel-cover__divider--secondary" />
         
         <!-- 
-        <p class="panel-cover__description"><a href="https://caotouchan.github.io" target="_blank">我的主页</a></p>
+        <p class="panel-cover__description"><a href="https://caotouchan.tech" target="_blank">我的主页</a></p>
          -->
         
         <div class="navigation-wrapper">
@@ -149,6 +149,13 @@
   <ol class="post-list">
     
     <li>
+      <h2 class="post-list__post-title post-title"><a href="/2019/07/cs224u-07-re/" title="访问 笔记 - CS224U NLU 07 关系抽取">笔记 - CS224U NLU 07 关系抽取</a></h2>
+      <p class="excerpt">概要关系抽取实际上就是从自然语言文本中抽取出三元组，比如：  (founders, SpaceX, Elon_Musk)  (has_spouse, Elon_Musk, Talulah_Riley)  (worked_at, Elon_Musk, Tesla_Motors)累计这些三元组构造的知识库 (knowledge base, KB) 可以作为 QA 系统之类的基础。但是构造 KB 是个费时且昂贵的工作，所以我们将会使用一些现成的 KB 来帮助我们完成这个任务。基于模板的方法(Ha...&hellip;</p>
+      <div class="post-list__meta"><time datetime="2019-07-01 08:02:11 +0800" class="post-list__meta--date date">2019-07-01</time> &#8226; <span class="post-list__meta--tags tags">cs224u stanford 关系抽取 远程监督</span><a class="btn-border-small" href=/2019/07/cs224u-07-re/>继续阅读</a></div>
+      <hr class="post-list__divider" />
+    </li>
+    
+    <li>
       <h2 class="post-list__post-title post-title"><a href="/2019/06/kafka-01-intro/" title="访问 Kafka 知识总结与实战（01）消息引擎、分布式流处理平台、基本术语">Kafka 知识总结与实战（01）消息引擎、分布式流处理平台、基本术语</a></h2>
       <p class="excerpt">&hellip;</p>
       <div class="post-list__meta"><time datetime="2019-06-30 14:02:11 +0800" class="post-list__meta--date date">2019-06-30</time> &#8226; <span class="post-list__meta--tags tags">消息引擎 分布式流处理平台 消息 主题 生产者 消费者 重平衡</span><a class="btn-border-small" href=/2019/06/kafka-01-intro/>继续阅读</a></div>
@@ -198,9 +205,9 @@
     </li>
     
     <li>
-      <h2 class="post-list__post-title post-title"><a href="/2019/06/heap/" title="访问 数据结构和算法（11）：堆排序">数据结构和算法（11）：堆排序</a></h2>
+      <h2 class="post-list__post-title post-title"><a href="/2019/06/alg-heap/" title="访问 数据结构和算法（11）：堆排序">数据结构和算法（11）：堆排序</a></h2>
       <p class="excerpt">定义堆是完全二叉树，其中每一个节点的值都必须大于等于（或小于等于）其子树中每个节点的值。存储使用数组来存储堆，下标为  的节点的左子节点，就是下标为  的节点，右子节点就是下标为  的节点，父节点下标是 。插入元素把新插入的元素放到堆的最后，之后进行调整，让其重新满足堆的特性 —— 这个过程叫做 堆化（heapify）。核心代码如下：  public void insert(int data) {    if (count &gt;= n) return; // 堆满了    ++coun...&hellip;</p>
-      <div class="post-list__meta"><time datetime="2019-06-05 00:02:11 +0800" class="post-list__meta--date date">2019-06-05</time> &#8226; <span class="post-list__meta--tags tags"></span><a class="btn-border-small" href=/2019/06/heap/>继续阅读</a></div>
+      <div class="post-list__meta"><time datetime="2019-06-05 00:02:11 +0800" class="post-list__meta--date date">2019-06-05</time> &#8226; <span class="post-list__meta--tags tags"></span><a class="btn-border-small" href=/2019/06/alg-heap/>继续阅读</a></div>
       <hr class="post-list__divider" />
     </li>
     
@@ -208,13 +215,6 @@
       <h2 class="post-list__post-title post-title"><a href="/2019/06/alg-tree/" title="访问 数据结构和算法（08）：二叉树">数据结构和算法（08）：二叉树</a></h2>
       <p class="excerpt">存储  链式存储  顺序存储访问方式二叉查找树定义二叉查找树 ： 在树中的任意一个节点，其左子树中的每个节点的值，都要小于这个节点的值，而右子树节点的值都大于这个节点的值。查找插入删除删除操作有三种情况：      要删除的节点没有子节点，直接删除        要删除的几点只有一个子节点，则将其父节点指向其子节点        有两个子节点，则找到右子树中的最小节点，替换到要删除的节点。如下  输出有序序列中序 遍历二叉查找树，可以输出有序的数据序列，时间复杂度是 。支持重复数据时间复杂...&hellip;</p>
       <div class="post-list__meta"><time datetime="2019-06-05 00:02:08 +0800" class="post-list__meta--date date">2019-06-05</time> &#8226; <span class="post-list__meta--tags tags"></span><a class="btn-border-small" href=/2019/06/alg-tree/>继续阅读</a></div>
-      <hr class="post-list__divider" />
-    </li>
-    
-    <li>
-      <h2 class="post-list__post-title post-title"><a href="/2019/06/hashtb/" title="访问 数据结构和算法（07）：散列表">数据结构和算法（07）：散列表</a></h2>
-      <p class="excerpt">结构散列冲突  开放寻址法开放寻址法的实现主要有：线性探测、二次探测、双重散列。  链表法工业级的散列表      散列函数不能太复杂：直接寻址法、平方取中法、折叠法、随机数法等        高效动态扩容：需要扩容情况下，当有新数据要插入时，将新数据插入新散列表中，并且从老的散列表中拿出一个数据放入到新散列表。经过多次插入操作之后，老的散列表中的数据就一点一点全部搬移到新散列表中了。这样没有了集中的一次性数据搬移，插入操作就都变得很快了。        散列冲突的解决方法：基于链表的散列...&hellip;</p>
-      <div class="post-list__meta"><time datetime="2019-06-05 00:02:07 +0800" class="post-list__meta--date date">2019-06-05</time> &#8226; <span class="post-list__meta--tags tags"></span><a class="btn-border-small" href=/2019/06/hashtb/>继续阅读</a></div>
       <hr class="post-list__divider" />
     </li>
     
@@ -236,7 +236,7 @@
             <section class="footer">
     <footer>
     	<span class="footer__copyright">本站点采用<a href="http://creativecommons.org/licenses/by-nc-sa/4.0/">知识共享 署名-非商业性使用-相同方式共享 4.0 国际 许可协议</a></span>
-        <span class="footer__copyright">本站由 <a href="https://caotouchan.github.io">@caotouchan</a> 创建，采用 <a href="https://github.com/onevcat/vno-jekyll">Vno - Jekyll</a> 作为主题，您可以在 GitHub 找到<a href="https://github.com/CaoTouChan/caotouchan.github.io">本站源码</a> - &copy; 2019</span>
+        <span class="footer__copyright">本站由 <a href="https://caotouchan.tech">@caotouchan</a> 创建，采用 <a href="https://github.com/onevcat/vno-jekyll">Vno - Jekyll</a> 作为主题，您可以在 GitHub 找到<a href="https://github.com/CaoTouChan/caotouchan.github.io">本站源码</a> - &copy; 2019</span>
     </footer>
 </section>
 

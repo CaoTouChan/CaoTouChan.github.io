@@ -1,0 +1,184 @@
+---
+layout: post
+title: 笔记 - CS224U NLU 07 关系抽取
+date: 2019-07-01 09:02:11.000000000 +09:00
+tags: cs224u stanford 关系抽取 远程监督
+---
+
+## 概要
+
+关系抽取实际上就是从自然语言文本中抽取出三元组，比如：
+
+* (founders, SpaceX, Elon_Musk)
+* (has_spouse, Elon_Musk, Talulah_Riley)
+* (worked_at, Elon_Musk, Tesla_Motors)
+
+累计这些三元组构造的知识库 (knowledge base, KB) 可以作为 QA 系统之类的基础。但是构造 KB 是个费时且昂贵的工作，所以我们将会使用一些现成的 KB 来帮助我们完成这个任务。
+
+
+## 基于模板的方法(Hand-built patterns)
+
+### **基于触发词/字符串**
+
+举例来说，使用类似 "X is the founder of Y" 这样的模板，可以抽取出 IS-A 的关系，比如 "Elon Musk is the founder of SpaceX" 可以得到 `(founders, SpaceX, Elon_Musk)` 。
+
+可以使用诸如 Stanford CoreNLP 的 `tokensRegex` 这样的工具进行实现。
+
+### **基于依存句法**
+
+通常以动词为起点构建规则，对节点上的词性和边上的依存关系进行限定，流程为：
+
+1. 分词、词性标注、命名实体识别、依存句法分析等
+2. 根据依存句法树匹配规则，生成三元组
+3. 根据扩展规则扩展三元组
+4. 进一步对三元组实体和触发词进行关系抽取
+
+![](http://ww2.sinaimg.cn/large/006tNc79ly1g4k7qfhdbzj310q0lo0u9.jpg)
+
+图片来源：[徐阿衡的博客](http://www.shuang0420.com/2018/09/15/%E7%9F%A5%E8%AF%86%E6%8A%BD%E5%8F%96-%E5%AE%9E%E4%BD%93%E5%8F%8A%E5%85%B3%E7%B3%BB%E6%8A%BD%E5%8F%96/)
+
+
+* 优缺点
+
+基于模板的方法可以有高准确率，但是召回率会比较高，而且费时费力。
+
+
+## 监督学习(supervised machine learning)
+
+### **机器学习**
+
+为了提高效率，我们训练两个分类器，第一个分类器判断命名实体间是否有关系，若有则送到第二个分类器给实体分配关系类别，分类器可以选择 MaxEnt、Naive Bayes、SVM 等。
+
+特征的选择可以有多样，比如：
+1. 轻量级 ：实体的特征，包括实体前后的词、实体类型、实体之间的距离等
+2. 中等量级 ：考虑 chunk，如 NP、VP、PP 这类短语
+3. 重量级 ：考虑实体间的依存关系、实体间树结构的距离、其他特定的结构信息等
+
+### **深度学习（Pipeline vs Joint Model）**
+
+模型通常有 CNN/RNN + attention，损失函数 ranking loss 要优于 cross entropy。
+
+用到的特征通常有：
+1. Position embeddings
+2. Word embeddings
+3. Knowledge embeddings
+
+分为两大类 Pipeline 和 Joint Model：
+
+1. **Pipeline** ： 把实体识别和关系分类作为两个完全 **独立** 的过程
+
+- CR-CNN ([Santos et. al Computer Science 2015](https://arxiv.org/pdf/1504.06580.pdf))
+
+![](http://ww2.sinaimg.cn/large/006tNc79ly1g4k9ojhqv1j308e0epjrm.jpg)
+
+word embedding + position embedding、6 个卷积核、max pooling 生成 sentence vector，与关系向量做点积求相似度。
+
+损失函数使用 **pairwise ranking loss function** 
+
+$$
+\begin{equation}
+\begin{aligned} L=& \log \left(1+\exp \left(\gamma\left(m^{+}-s_{\theta}(x)_{y^{+}}\right)\right)\right.\\ &+\log \left(1+\exp \left(\gamma\left(m^{-}+s_{\theta}(x)_{c^{-}}\right)\right)\right.\end{aligned}
+\end{equation}
+$$
+
+
+训练时每个样本有两个标签，正确标签 $y^+$ 和错误标签 $c^-$，$m^+$ 和 $m^-$ 对应了两个 margin，$\gamma$ 用来缩放。希望 $$s_{\theta}(x)_{y^+}$$ 越大越好，$s_{\theta}(x)_{c^-}$ 越小越好。
+
+- Att-CNN ([Relation Classification via Multi-Level Attention CNNs](http://iiis.tsinghua.edu.cn/~weblt/papers/relation-classification.pdf))
+
+![](http://ww3.sinaimg.cn/large/006tNc79ly1g4k9uunlpgj30nu0gcdh9.jpg)
+
+使用两层 Attention —— 一个是对两个实体的注意力，另一个是用 attention pooling 代替 max pooling （加强相关性强的词的权重）。
+
+- Att-BLSTM （[Peng Zhou et. al ACL 2016](http://www.aclweb.org/anthology/P16-2034)）
+
+BiLSTM + Attention 做关系分类任务。
+
+![](http://ww4.sinaimg.cn/large/006tNc79ly1g4k9zy9vn2j30vh0ekdgr.jpg)
+
+- 评测
+
+各方法在 SemEval-2010 Task 8 上的评测：
+
+![](http://ww3.sinaimg.cn/large/006tNc79ly1g4ka1i7hyuj315u0ne0vs.jpg)
+
+2. **Joint Model** ：实体识别和关系分类的过程 **共同优化**
+
+- LSTM-RNNs （[Miwa et. al ACL 2016](https://arxiv.org/pdf/1601.00770.pdf))
+
+实体识别和关系分类的参数共享，判断过程没有进行交互。
+
+![](http://ww1.sinaimg.cn/large/006tNc79ly1g4ka58dl61j30s90e3q3r.jpg)
+
+从上图可以看出有三个表示层：
+
+> Embedding layer (word embeddings layer) ： 用到词向量、词性标签、依存句法标签、实体标签
+>
+> Sequence layer (word sequence based LSTM-RNN layer)：负责实体识别。对两个方向的隐层单元拼接后进行实体识别（或序列标注）
+>
+> Dependency layer (dependency subtree based LSTM-RNN layer )：负责关系分类。用 tree-structured BiLSTM-RNNs 来表示 relation candidate，捕捉了 top-down 和 bottom-up 双向的关系。主要是对 sequence layer 识别出的每个实体的最后一个单词进行排列组合，然后同样用两层 NN + softmax 对该组合进行分类。
+
+- 评测
+
+![](http://ww4.sinaimg.cn/large/006tNc79ly1g4kat7oqqoj30bj071t8z.jpg)
+
+直觉上 pipeline 会传递误差，但是上图表明 Joint Model 未必起作用，但是评测结果表明外部知识可以对训练产生正面影响。
+
+## 半监督学习
+
+半监督学习是利用少量的标注信息进行学习，有基于 Bootstrap 的方法以及 [远程监督](http://deepdive.stanford.edu/distant_supervision) 方法。
+
+### **Bootstrapping**
+
+用少量实例作为初始种子(seed tuples)的集合，然后利用 pattern 学习方法进行学习，迭代抽取实例，然后从新实例中学习新 pattern 并扩充 pattern 集合，寻找和发现新的潜在关系三元组。
+
+![](http://ww2.sinaimg.cn/large/006tNc79ly1g4kb9ab0ljj30sc0gzdhp.jpg)
+
+这方法对初始给定的种子集敏感，存在语义漂移问题，准确率较低，缺乏对每一个结果的置信度的计算。
+
+### **Distant supervision**
+
+把知识库与非结构化文本对齐来自动构建大量训练数据，减少模型对人工标注数据的依赖。先从知识库中抽取存在关系的实体对，然后从非结构化文本中抽取含有实体对的句子作为训练样本，提取特征训练分类器。
+
+- APCNNs (PCNN + Sentence-level Attention) （[Kang Liu et.al AI 2017](https://pdfs.semanticscholar.org/b8da/823ad81e3b8e5b80d82f86129fdb1d9132e7.pdf?_ga=2.214235987.519572625.1561962607-1203158446.1561962607)）
+
+![](http://ww3.sinaimg.cn/large/006tNc79ly1g4kbqekmqmj30sw0cygms.jpg)
+
+1. PCNN : 分段池化以更加精准刻画不同上下文对句向量的贡献，参考 [Distant Supervision for Relation Extraction via Piecewise Convolutional Neural Networks](http://www.emnlp2015.org/proceedings/EMNLP/pdf/EMNLP203.pdf)。
+2. Sentence-level Attention : 句子层面的 attention 对 bag 里所有句子进行加权作为 bag 的特征向量，参考 [Neural Relation Extraction with Selective Attention over Instances](http://www.aclweb.org/anthology/P16-1200)。权重公式 ： $$\begin{equation}
+\omega_{i}=\mathbf{W}_{a}^{\top}\left(\tanh \left[\boldsymbol{b}_{i} ; \boldsymbol{v}_{\text {relation}}\right]\right)+b_{a}
+\end{equation}$$，这里对两个实体向量作差来表示关系向量 $$v_{relation}$$，如果一个 instance 能表达这种关系，那么这个 instance 的向量表达应该和 $$v_{relation}$$ 高度相似，根据这个假设来计算句向量和关系向量的相关性。
+3. Entity Descriptions : 引入实体背景知识 $$\begin{equation}
+\mathcal{D}=\left\{\left(e_{i}, d_{i}\right)|i=1, \cdots,| \mathcal{D} |\right\}
+\end{equation}$$ （其中，$$e_i$$ 是实体表示，$$d_i$$ 是通过另一个传统 CNN 对收集到的实体的描述句抽特征得到），定义误差 $$\begin{equation}
+\mathcal{L}_{e}=\sum_{i=1}^{|\mathcal{D}|}\left\|\boldsymbol{e}_{i}-\boldsymbol{d}_{i}\right\|_{2}^{2}
+\end{equation}$$。
+
+训练过程是先训练不包含 Entity Descriptions 的 APCNNs 模型，目标函数是 $$\begin{equation}
+\min \mathcal{L}_{A}=-\sum_{i=1}^{N} \log p\left(r_{i} | B_{i}, \theta\right)
+\end{equation}$$。然后训练模型 APCNNs + D，目标函数是 $$\begin{equation}
+\min \mathcal{L}=\mathcal{L}_{A}+\lambda \mathcal{L}_{e}
+\end{equation}$$。
+
+这种方法可以利用丰富的知识库信息，但因为其过强的假设导入引入大量噪声，也存在语义漂移，很难发现新的关系。
+
+
+## 无监督学习 
+
+### **Unsupervised learning from the web**
+
+
+## 参考资料和相关阅读
+
+* Stanford CS224U 课程主页 [http://web.stanford.edu/class/cs224u/](http://web.stanford.edu/class/cs224u/)
+
+* CS224U NLU（ 07 ）：关系抽取 视频 [https://youtu.be/pO3Jsr31s_Q](https://youtu.be/pO3Jsr31s_Q)
+
+* Jurafsky and Martin 2009, §22.1-22.2 [http://web.stanford.edu/class/cs224u/restricted/JM2009infoextract.pdf](http://web.stanford.edu/class/cs224u/restricted/JM2009infoextract.pdf)
+
+* Snow et al. 2005 [http://ai.stanford.edu/~rion/papers/hypernym_nips05.pdf](http://ai.stanford.edu/~rion/papers/hypernym_nips05.pdf)
+
+* Mintz et al. 2009 [http://www.aclweb.org/anthology/P/P09/P09-1113.pdf](http://www.aclweb.org/anthology/P/P09/P09-1113.pdf)
+
+* 徐啊衡 知识抽取-实体及关系抽取 [http://www.shuang0420.com/2018/09/15/知识抽取-实体及关系抽取](http://www.shuang0420.com/2018/09/15/%E7%9F%A5%E8%AF%86%E6%8A%BD%E5%8F%96-%E5%AE%9E%E4%BD%93%E5%8F%8A%E5%85%B3%E7%B3%BB%E6%8A%BD%E5%8F%96/)
+

@@ -5,9 +5,238 @@
     <description>90 后 | 广东人 | 现居住于帝都 | 算法攻城狮</description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 01 Jul 2019 11:18:15 +0800</pubDate>
-    <lastBuildDate>Mon, 01 Jul 2019 11:18:15 +0800</lastBuildDate>
+    <pubDate>Mon, 01 Jul 2019 15:02:27 +0800</pubDate>
+    <lastBuildDate>Mon, 01 Jul 2019 15:02:27 +0800</lastBuildDate>
     <generator>Jekyll v3.8.5</generator>
+    
+      <item>
+        <title>笔记 - CS224U NLU 07 关系抽取</title>
+        <description>&lt;h2 id=&quot;概要&quot;&gt;概要&lt;/h2&gt;
+
+&lt;p&gt;关系抽取实际上就是从自然语言文本中抽取出三元组，比如：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;(founders, SpaceX, Elon_Musk)&lt;/li&gt;
+  &lt;li&gt;(has_spouse, Elon_Musk, Talulah_Riley)&lt;/li&gt;
+  &lt;li&gt;(worked_at, Elon_Musk, Tesla_Motors)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;累计这些三元组构造的知识库 (knowledge base, KB) 可以作为 QA 系统之类的基础。但是构造 KB 是个费时且昂贵的工作，所以我们将会使用一些现成的 KB 来帮助我们完成这个任务。&lt;/p&gt;
+
+&lt;h2 id=&quot;基于模板的方法hand-built-patterns&quot;&gt;基于模板的方法(Hand-built patterns)&lt;/h2&gt;
+
+&lt;h3 id=&quot;基于触发词字符串&quot;&gt;&lt;strong&gt;基于触发词/字符串&lt;/strong&gt;&lt;/h3&gt;
+
+&lt;p&gt;举例来说，使用类似 “X is the founder of Y” 这样的模板，可以抽取出 IS-A 的关系，比如 “Elon Musk is the founder of SpaceX” 可以得到 &lt;code class=&quot;highlighter-rouge&quot;&gt;(founders, SpaceX, Elon_Musk)&lt;/code&gt; 。&lt;/p&gt;
+
+&lt;p&gt;可以使用诸如 Stanford CoreNLP 的 &lt;code class=&quot;highlighter-rouge&quot;&gt;tokensRegex&lt;/code&gt; 这样的工具进行实现。&lt;/p&gt;
+
+&lt;h3 id=&quot;基于依存句法&quot;&gt;&lt;strong&gt;基于依存句法&lt;/strong&gt;&lt;/h3&gt;
+
+&lt;p&gt;通常以动词为起点构建规则，对节点上的词性和边上的依存关系进行限定，流程为：&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;分词、词性标注、命名实体识别、依存句法分析等&lt;/li&gt;
+  &lt;li&gt;根据依存句法树匹配规则，生成三元组&lt;/li&gt;
+  &lt;li&gt;根据扩展规则扩展三元组&lt;/li&gt;
+  &lt;li&gt;进一步对三元组实体和触发词进行关系抽取&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://ww2.sinaimg.cn/large/006tNc79ly1g4k7qfhdbzj310q0lo0u9.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;图片来源：&lt;a href=&quot;http://www.shuang0420.com/2018/09/15/%E7%9F%A5%E8%AF%86%E6%8A%BD%E5%8F%96-%E5%AE%9E%E4%BD%93%E5%8F%8A%E5%85%B3%E7%B3%BB%E6%8A%BD%E5%8F%96/&quot;&gt;徐阿衡的博客&lt;/a&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;优缺点&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;基于模板的方法可以有高准确率，但是召回率会比较高，而且费时费力。&lt;/p&gt;
+
+&lt;h2 id=&quot;监督学习supervised-machine-learning&quot;&gt;监督学习(supervised machine learning)&lt;/h2&gt;
+
+&lt;h3 id=&quot;机器学习&quot;&gt;&lt;strong&gt;机器学习&lt;/strong&gt;&lt;/h3&gt;
+
+&lt;p&gt;为了提高效率，我们训练两个分类器，第一个分类器判断命名实体间是否有关系，若有则送到第二个分类器给实体分配关系类别，分类器可以选择 MaxEnt、Naive Bayes、SVM 等。&lt;/p&gt;
+
+&lt;p&gt;特征的选择可以有多样，比如：&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;轻量级 ：实体的特征，包括实体前后的词、实体类型、实体之间的距离等&lt;/li&gt;
+  &lt;li&gt;中等量级 ：考虑 chunk，如 NP、VP、PP 这类短语&lt;/li&gt;
+  &lt;li&gt;重量级 ：考虑实体间的依存关系、实体间树结构的距离、其他特定的结构信息等&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&quot;深度学习pipeline-vs-joint-model&quot;&gt;&lt;strong&gt;深度学习（Pipeline vs Joint Model）&lt;/strong&gt;&lt;/h3&gt;
+
+&lt;p&gt;模型通常有 CNN/RNN + attention，损失函数 ranking loss 要优于 cross entropy。&lt;/p&gt;
+
+&lt;p&gt;用到的特征通常有：&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;Position embeddings&lt;/li&gt;
+  &lt;li&gt;Word embeddings&lt;/li&gt;
+  &lt;li&gt;Knowledge embeddings&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;分为两大类 Pipeline 和 Joint Model：&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;&lt;strong&gt;Pipeline&lt;/strong&gt; ： 把实体识别和关系分类作为两个完全 &lt;strong&gt;独立&lt;/strong&gt; 的过程&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;CR-CNN (&lt;a href=&quot;https://arxiv.org/pdf/1504.06580.pdf&quot;&gt;Santos et. al Computer Science 2015&lt;/a&gt;)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://ww2.sinaimg.cn/large/006tNc79ly1g4k9ojhqv1j308e0epjrm.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;word embedding + position embedding、6 个卷积核、max pooling 生成 sentence vector，与关系向量做点积求相似度。&lt;/p&gt;
+
+&lt;p&gt;损失函数使用 &lt;strong&gt;pairwise ranking loss function&lt;/strong&gt;&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+\begin{equation}
+\begin{aligned} L=&amp; \log \left(1+\exp \left(\gamma\left(m^{+}-s_{\theta}(x)_{y^{+}}\right)\right)\right.\\ &amp;+\log \left(1+\exp \left(\gamma\left(m^{-}+s_{\theta}(x)_{c^{-}}\right)\right)\right.\end{aligned}
+\end{equation} %]]&gt;&lt;/script&gt;
+
+&lt;p&gt;训练时每个样本有两个标签，正确标签 $y^+$ 和错误标签 $c^-$，$m^+$ 和 $m^-$ 对应了两个 margin，$\gamma$ 用来缩放。希望 &lt;script type=&quot;math/tex&quot;&gt;s_{\theta}(x)_{y^+}&lt;/script&gt; 越大越好，$s_{\theta}(x)_{c^-}$ 越小越好。&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Att-CNN (&lt;a href=&quot;http://iiis.tsinghua.edu.cn/~weblt/papers/relation-classification.pdf&quot;&gt;Relation Classification via Multi-Level Attention CNNs&lt;/a&gt;)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://ww3.sinaimg.cn/large/006tNc79ly1g4k9uunlpgj30nu0gcdh9.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;使用两层 Attention —— 一个是对两个实体的注意力，另一个是用 attention pooling 代替 max pooling （加强相关性强的词的权重）。&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Att-BLSTM （&lt;a href=&quot;http://www.aclweb.org/anthology/P16-2034&quot;&gt;Peng Zhou et. al ACL 2016&lt;/a&gt;）&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;BiLSTM + Attention 做关系分类任务。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://ww4.sinaimg.cn/large/006tNc79ly1g4k9zy9vn2j30vh0ekdgr.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;评测&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;各方法在 SemEval-2010 Task 8 上的评测：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://ww3.sinaimg.cn/large/006tNc79ly1g4ka1i7hyuj315u0ne0vs.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;&lt;strong&gt;Joint Model&lt;/strong&gt; ：实体识别和关系分类的过程 &lt;strong&gt;共同优化&lt;/strong&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;LSTM-RNNs （&lt;a href=&quot;https://arxiv.org/pdf/1601.00770.pdf&quot;&gt;Miwa et. al ACL 2016&lt;/a&gt;)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;实体识别和关系分类的参数共享，判断过程没有进行交互。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://ww1.sinaimg.cn/large/006tNc79ly1g4ka58dl61j30s90e3q3r.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;从上图可以看出有三个表示层：&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Embedding layer (word embeddings layer) ： 用到词向量、词性标签、依存句法标签、实体标签&lt;/p&gt;
+
+  &lt;p&gt;Sequence layer (word sequence based LSTM-RNN layer)：负责实体识别。对两个方向的隐层单元拼接后进行实体识别（或序列标注）&lt;/p&gt;
+
+  &lt;p&gt;Dependency layer (dependency subtree based LSTM-RNN layer )：负责关系分类。用 tree-structured BiLSTM-RNNs 来表示 relation candidate，捕捉了 top-down 和 bottom-up 双向的关系。主要是对 sequence layer 识别出的每个实体的最后一个单词进行排列组合，然后同样用两层 NN + softmax 对该组合进行分类。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;评测&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://ww4.sinaimg.cn/large/006tNc79ly1g4kat7oqqoj30bj071t8z.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;直觉上 pipeline 会传递误差，但是上图表明 Joint Model 未必起作用，但是评测结果表明外部知识可以对训练产生正面影响。&lt;/p&gt;
+
+&lt;h2 id=&quot;半监督学习&quot;&gt;半监督学习&lt;/h2&gt;
+
+&lt;p&gt;半监督学习是利用少量的标注信息进行学习，有基于 Bootstrap 的方法以及 &lt;a href=&quot;http://deepdive.stanford.edu/distant_supervision&quot;&gt;远程监督&lt;/a&gt; 方法。&lt;/p&gt;
+
+&lt;h3 id=&quot;bootstrapping&quot;&gt;&lt;strong&gt;Bootstrapping&lt;/strong&gt;&lt;/h3&gt;
+
+&lt;p&gt;用少量实例作为初始种子(seed tuples)的集合，然后利用 pattern 学习方法进行学习，迭代抽取实例，然后从新实例中学习新 pattern 并扩充 pattern 集合，寻找和发现新的潜在关系三元组。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://ww2.sinaimg.cn/large/006tNc79ly1g4kb9ab0ljj30sc0gzdhp.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;这方法对初始给定的种子集敏感，存在语义漂移问题，准确率较低，缺乏对每一个结果的置信度的计算。&lt;/p&gt;
+
+&lt;h3 id=&quot;distant-supervision&quot;&gt;&lt;strong&gt;Distant supervision&lt;/strong&gt;&lt;/h3&gt;
+
+&lt;p&gt;把知识库与非结构化文本对齐来自动构建大量训练数据，减少模型对人工标注数据的依赖。先从知识库中抽取存在关系的实体对，然后从非结构化文本中抽取含有实体对的句子作为训练样本，提取特征训练分类器。&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;APCNNs (PCNN + Sentence-level Attention) （&lt;a href=&quot;https://pdfs.semanticscholar.org/b8da/823ad81e3b8e5b80d82f86129fdb1d9132e7.pdf?_ga=2.214235987.519572625.1561962607-1203158446.1561962607&quot;&gt;Kang Liu et.al AI 2017&lt;/a&gt;）&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://ww3.sinaimg.cn/large/006tNc79ly1g4kbqekmqmj30sw0cygms.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;PCNN : 分段池化以更加精准刻画不同上下文对句向量的贡献，参考 &lt;a href=&quot;http://www.emnlp2015.org/proceedings/EMNLP/pdf/EMNLP203.pdf&quot;&gt;Distant Supervision for Relation Extraction via Piecewise Convolutional Neural Networks&lt;/a&gt;。&lt;/li&gt;
+  &lt;li&gt;Sentence-level Attention : 句子层面的 attention 对 bag 里所有句子进行加权作为 bag 的特征向量，参考 &lt;a href=&quot;http://www.aclweb.org/anthology/P16-1200&quot;&gt;Neural Relation Extraction with Selective Attention over Instances&lt;/a&gt;。权重公式 ： &lt;script type=&quot;math/tex&quot;&gt;\begin{equation}
+\omega_{i}=\mathbf{W}_{a}^{\top}\left(\tanh \left[\boldsymbol{b}_{i} ; \boldsymbol{v}_{\text {relation}}\right]\right)+b_{a}
+\end{equation}&lt;/script&gt;，这里对两个实体向量作差来表示关系向量 &lt;script type=&quot;math/tex&quot;&gt;v_{relation}&lt;/script&gt;，如果一个 instance 能表达这种关系，那么这个 instance 的向量表达应该和 &lt;script type=&quot;math/tex&quot;&gt;v_{relation}&lt;/script&gt; 高度相似，根据这个假设来计算句向量和关系向量的相关性。&lt;/li&gt;
+  &lt;li&gt;Entity Descriptions : 引入实体背景知识 &lt;script type=&quot;math/tex&quot;&gt;\begin{equation}
+\mathcal{D}=\left\{\left(e_{i}, d_{i}\right)|i=1, \cdots,| \mathcal{D} |\right\}
+\end{equation}&lt;/script&gt; （其中，&lt;script type=&quot;math/tex&quot;&gt;e_i&lt;/script&gt; 是实体表示，&lt;script type=&quot;math/tex&quot;&gt;d_i&lt;/script&gt; 是通过另一个传统 CNN 对收集到的实体的描述句抽特征得到），定义误差 &lt;script type=&quot;math/tex&quot;&gt;\begin{equation}
+\mathcal{L}_{e}=\sum_{i=1}^{|\mathcal{D}|}\left\|\boldsymbol{e}_{i}-\boldsymbol{d}_{i}\right\|_{2}^{2}
+\end{equation}&lt;/script&gt;。&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;训练过程是先训练不包含 Entity Descriptions 的 APCNNs 模型，目标函数是 &lt;script type=&quot;math/tex&quot;&gt;\begin{equation}
+\min \mathcal{L}_{A}=-\sum_{i=1}^{N} \log p\left(r_{i} | B_{i}, \theta\right)
+\end{equation}&lt;/script&gt;。然后训练模型 APCNNs + D，目标函数是 &lt;script type=&quot;math/tex&quot;&gt;\begin{equation}
+\min \mathcal{L}=\mathcal{L}_{A}+\lambda \mathcal{L}_{e}
+\end{equation}&lt;/script&gt;。&lt;/p&gt;
+
+&lt;p&gt;这种方法可以利用丰富的知识库信息，但因为其过强的假设导入引入大量噪声，也存在语义漂移，很难发现新的关系。&lt;/p&gt;
+
+&lt;h2 id=&quot;无监督学习&quot;&gt;无监督学习&lt;/h2&gt;
+
+&lt;h3 id=&quot;unsupervised-learning-from-the-web&quot;&gt;&lt;strong&gt;Unsupervised learning from the web&lt;/strong&gt;&lt;/h3&gt;
+
+&lt;h2 id=&quot;参考资料和相关阅读&quot;&gt;参考资料和相关阅读&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;Stanford CS224U 课程主页 &lt;a href=&quot;http://web.stanford.edu/class/cs224u/&quot;&gt;http://web.stanford.edu/class/cs224u/&lt;/a&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;CS224U NLU（ 07 ）：关系抽取 视频 &lt;a href=&quot;https://youtu.be/pO3Jsr31s_Q&quot;&gt;https://youtu.be/pO3Jsr31s_Q&lt;/a&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Jurafsky and Martin 2009, §22.1-22.2 &lt;a href=&quot;http://web.stanford.edu/class/cs224u/restricted/JM2009infoextract.pdf&quot;&gt;http://web.stanford.edu/class/cs224u/restricted/JM2009infoextract.pdf&lt;/a&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Snow et al. 2005 &lt;a href=&quot;http://ai.stanford.edu/~rion/papers/hypernym_nips05.pdf&quot;&gt;http://ai.stanford.edu/~rion/papers/hypernym_nips05.pdf&lt;/a&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Mintz et al. 2009 &lt;a href=&quot;http://www.aclweb.org/anthology/P/P09/P09-1113.pdf&quot;&gt;http://www.aclweb.org/anthology/P/P09/P09-1113.pdf&lt;/a&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;徐啊衡 知识抽取-实体及关系抽取 &lt;a href=&quot;http://www.shuang0420.com/2018/09/15/%E7%9F%A5%E8%AF%86%E6%8A%BD%E5%8F%96-%E5%AE%9E%E4%BD%93%E5%8F%8A%E5%85%B3%E7%B3%BB%E6%8A%BD%E5%8F%96/&quot;&gt;http://www.shuang0420.com/2018/09/15/知识抽取-实体及关系抽取&lt;/a&gt;&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+</description>
+        <pubDate>Mon, 01 Jul 2019 08:02:11 +0800</pubDate>
+        <link>http://localhost:4000/2019/07/cs224u-07-re/</link>
+        <guid isPermaLink="true">http://localhost:4000/2019/07/cs224u-07-re/</guid>
+        
+        <category>cs224u</category>
+        
+        <category>stanford</category>
+        
+        <category>关系抽取</category>
+        
+        <category>远程监督</category>
+        
+        
+      </item>
     
       <item>
         <title>Kafka 知识总结与实战（01）消息引擎、分布式流处理平台、基本术语</title>
@@ -1387,8 +1616,8 @@ Output: [1,2]
 
 </description>
         <pubDate>Wed, 05 Jun 2019 00:02:11 +0800</pubDate>
-        <link>http://localhost:4000/2019/06/heap/</link>
-        <guid isPermaLink="true">http://localhost:4000/2019/06/heap/</guid>
+        <link>http://localhost:4000/2019/06/alg-heap/</link>
+        <guid isPermaLink="true">http://localhost:4000/2019/06/alg-heap/</guid>
         
         
       </item>
@@ -1515,116 +1744,6 @@ Output: [1,2]
         <pubDate>Wed, 05 Jun 2019 00:02:08 +0800</pubDate>
         <link>http://localhost:4000/2019/06/alg-tree/</link>
         <guid isPermaLink="true">http://localhost:4000/2019/06/alg-tree/</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>数据结构和算法（07）：散列表</title>
-        <description>&lt;h2 id=&quot;结构&quot;&gt;结构&lt;/h2&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://ww2.sinaimg.cn/large/006tNc79ly1g4htxyonjfj30dh08uq38.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;散列冲突&quot;&gt;散列冲突&lt;/h2&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;开放寻址法&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;开放寻址法的实现主要有：线性探测、二次探测、双重散列。&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;链表法&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h2 id=&quot;工业级的散列表&quot;&gt;工业级的散列表&lt;/h2&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;
-    &lt;p&gt;散列函数不能太复杂：直接寻址法、平方取中法、折叠法、随机数法等&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;高效动态扩容：需要扩容情况下，当有新数据要插入时，将新数据插入新散列表中，并且从老的散列表中拿出一个数据放入到新散列表。经过多次插入操作之后，老的散列表中的数据就一点一点全部搬移到新散列表中了。这样没有了集中的一次性数据搬移，插入操作就都变得很快了。&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;散列冲突的解决方法：基于链表的散列冲突处理方法比较适合存储大对象、大数据量的散列表，而且，比起开放寻址法，它更加灵活，支持更多的优化策略，比如用红黑树代替链表。&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://ww2.sinaimg.cn/large/006tNc79ly1g4hty81motj3060060t8p.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;Java 中的 HashMap&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;初始大小为 16&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;最大装载因子默认 0.75&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;采用链表法解决冲突， JDK 1.8 版本引入红黑树&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;散列函数&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;hash&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Object&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;key&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;h&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;key&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;hashCode&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;；&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;h&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;^&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;h&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;16&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;capitity&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;//capicity 表示散列表的大小&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-
-&lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;hashCode&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-  &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;var1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;hash&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-  &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;var1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;value&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;length&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;kt&quot;&gt;char&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[]&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;var2&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;value&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;var3&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;var3&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;value&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;length&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;++&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;var3&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-      &lt;span class=&quot;n&quot;&gt;var1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;31&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;var1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;var2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;var3&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;];&lt;/span&gt;
-    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;hash&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;var1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-  &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-  &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;var1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h2 id=&quot;散列表--链表-lru-缓存淘汰&quot;&gt;散列表 + 链表： LRU 缓存淘汰&lt;/h2&gt;
-
-&lt;p&gt;实现缓存的添加、删除、查找的时间复杂度都是 O(1)。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://ww4.sinaimg.cn/large/006tNc79ly1g4htyfyu04j30cd087mxp.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;算法题&quot;&gt;算法题&lt;/h2&gt;
-
-&lt;h3 id=&quot;leetcode-49-group-anagrams&quot;&gt;LeetCode 49. Group Anagrams&lt;/h3&gt;
-
-&lt;p&gt;将 Anagrams 分组。&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Input: [&quot;eat&quot;, &quot;tea&quot;, &quot;tan&quot;, &quot;ate&quot;, &quot;nat&quot;, &quot;bat&quot;],
-Output:
-[
-  [&quot;ate&quot;,&quot;eat&quot;,&quot;tea&quot;],
-  [&quot;nat&quot;,&quot;tan&quot;],
-  [&quot;bat&quot;]
-]
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;使用散列表将排序后的字符串分组就好了。&lt;/p&gt;
-
-&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Solution&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;object&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;groupAnagrams&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;strs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;ans&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;collections&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;defaultdict&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;list&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;strs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
-            &lt;span class=&quot;n&quot;&gt;ans&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;tuple&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;sorted&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))]&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;append&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ans&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;values&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-</description>
-        <pubDate>Wed, 05 Jun 2019 00:02:07 +0800</pubDate>
-        <link>http://localhost:4000/2019/06/hashtb/</link>
-        <guid isPermaLink="true">http://localhost:4000/2019/06/hashtb/</guid>
         
         
       </item>
