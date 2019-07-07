@@ -7,15 +7,15 @@ date: 2019-06-05 01:02:08.000000000 +09:00
 
 * 链式存储
 
-![](http://ww3.sinaimg.cn/large/006tNc79ly1g4hu7y9igoj30vq0kejro.jpg)
+![](https://github.com/CaoTouChan/ctc_imgs/raw/master/006tNc79ly1g4hu7y9igoj30vq0kejro.jpg)
 
 * 顺序存储
 
-![](http://ww1.sinaimg.cn/large/006tNc79ly1g4hu8a2cn8j30vq0g9q33.jpg)
+![](https://github.com/CaoTouChan/ctc_imgs/raw/master/006tNc79ly1g4hu8a2cn8j30vq0g9q33.jpg)
 
 ## 访问方式
 
-![](http://ww2.sinaimg.cn/large/006tNc79ly1g4hu7370wzj30vq0g6gmk.jpg)
+![](https://github.com/CaoTouChan/ctc_imgs/raw/master/006tNc79ly1g4hu7370wzj30vq0g6gmk.jpg)
 
 ## 二叉查找树
 
@@ -25,11 +25,11 @@ date: 2019-06-05 01:02:08.000000000 +09:00
 
 ### 查找
 
-![](http://ww2.sinaimg.cn/large/006tNc79ly1g4hu5m3evij30vq0h4t8t.jpg)
+![](https://github.com/CaoTouChan/ctc_imgs/raw/master/006tNc79ly1g4hu5m3evij30vq0h4t8t.jpg)
 
 ### 插入
 
-![](http://ww4.sinaimg.cn/large/006tNc79ly1g4hu61pfpmj30vq0gqmxa.jpg)
+![](https://github.com/CaoTouChan/ctc_imgs/raw/master/006tNc79ly1g4hu61pfpmj30vq0gqmxa.jpg)
 
 ### 删除
 
@@ -41,7 +41,7 @@ date: 2019-06-05 01:02:08.000000000 +09:00
 
 3. 有两个子节点，则找到右子树中的最小节点，替换到要删除的节点。如下
 
-![](http://ww2.sinaimg.cn/large/006tNc79ly1g4hu94fwkbj30vq0h8t97.jpg)
+![](https://github.com/CaoTouChan/ctc_imgs/raw/master/006tNc79ly1g4hu94fwkbj30vq0h8t97.jpg)
 
 ### 输出有序序列
 
@@ -49,7 +49,7 @@ date: 2019-06-05 01:02:08.000000000 +09:00
 
 ### 支持重复数据
 
-![](http://ww2.sinaimg.cn/large/006tNc79ly1g4hua6rp3oj30vq0ffq2x.jpg)
+![](https://github.com/CaoTouChan/ctc_imgs/raw/master/006tNc79ly1g4hua6rp3oj30vq0ffq2x.jpg)
 
 ### 时间复杂度
 
@@ -73,7 +73,7 @@ date: 2019-06-05 01:02:08.000000000 +09:00
 
 4. 每个节点，从该节点到达其可达叶子节点的所有路径，都包含相同数目的黑色节点；
 
-![](http://ww3.sinaimg.cn/large/006tNc79ly1g4huavyjirj30vq0d5aa6.jpg)
+![](https://github.com/CaoTouChan/ctc_imgs/raw/master/006tNc79ly1g4huavyjirj30vq0d5aa6.jpg)
 
 
 ## 常见问题

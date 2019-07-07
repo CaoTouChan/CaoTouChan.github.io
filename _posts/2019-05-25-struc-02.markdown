@@ -45,7 +45,7 @@ $$
 
 做一个无心小和尚的目标检测器，如下图：
 
-![](http://ww4.sinaimg.cn/large/006tNc79ly1g4grsmkfeuj31380piab7.jpg)
+![](https://github.com/CaoTouChan/ctc_imgs/raw/master/006tNc79ly1g4grsmkfeuj31380piab7.jpg)
 
 那么我们可以定义：
 
@@ -56,11 +56,11 @@ $$
 
 * 例子二 ： 概要提取
 
-![](http://ww1.sinaimg.cn/large/006tNc79ly1g4grt47jkuj30na0bu3zk.jpg)
+![](https://github.com/CaoTouChan/ctc_imgs/raw/master/006tNc79ly1g4grt47jkuj30na0bu3zk.jpg)
 
 * 例子三 ： 检索
 
-![](http://ww3.sinaimg.cn/large/006tNc79ly1g4grtfsamej30nk0badgt.jpg)
+![](https://github.com/CaoTouChan/ctc_imgs/raw/master/006tNc79ly1g4grtfsamej30nk0badgt.jpg)
 
 ## Problem 2: 推断 —— 计算 “arg max” 
 
@@ -90,17 +90,17 @@ $$
 
 * 输入数据一
 
-![](http://ww4.sinaimg.cn/large/006tNc79ly1g4grtpvmhgj30eh084wev.jpg)
+![](https://github.com/CaoTouChan/ctc_imgs/raw/master/006tNc79ly1g4grtpvmhgj30eh084wev.jpg)
 
 * 输入数据二
 
-![](http://ww1.sinaimg.cn/large/006tNc79ly1g4grtyncmfj30d507f0ta.jpg)
+![](https://github.com/CaoTouChan/ctc_imgs/raw/master/006tNc79ly1g4grtyncmfj30d507f0ta.jpg)
 
 以上输入数据红框圈出对应为正确标记，蓝框为错误标记。那么我们可以得到一个红色标记 $\phi\left(x^{r}, \hat{y}^{r}\right)$ 和多个蓝色标记 $\phi\left(x^{r}, y\right)$ 组成的空间：
 
 > 注意：上述两个图片中的方框和问题一中的方框不一样。问题一中的方框表示单个样本的特征，而上图中一个方框代表一个样本的 $y$ —— 也就是红色方框表示组成 $\phi\left(x^{r}, \hat{y}^{r}\right)$ 的 $\hat{y}^{r}$，而蓝色方框表示组成 $\phi\left(x^{r}, y\right)$ 的 $y$ （ 其中 $y \ne \hat{y}^{r}$ ）
 
-![](http://ww2.sinaimg.cn/large/006tNc79ly1g4gru6rej3j30su0frdgo.jpg)
+![](https://github.com/CaoTouChan/ctc_imgs/raw/master/006tNc79ly1g4gru6rej3j30su0frdgo.jpg)
 
 我们的目标是找到 $w$ 使得：
 
@@ -148,7 +148,7 @@ $$
 
 还是以上边例子来说明这个算法。
 
-![](http://ww2.sinaimg.cn/large/006tNc79ly1g4gruhbsy7j30su0frdgo.jpg)
+![](https://github.com/CaoTouChan/ctc_imgs/raw/master/006tNc79ly1g4gruhbsy7j30su0frdgo.jpg)
 
 * **步骤 1**
 
@@ -164,7 +164,7 @@ $$
 
 4. 更新 w
 
-![](http://ww1.sinaimg.cn/large/006tNc79ly1g4gruszngwj30e005odg0.jpg)
+![](https://github.com/CaoTouChan/ctc_imgs/raw/master/006tNc79ly1g4gruszngwj30e005odg0.jpg)
 
 * **步骤 2**
 
@@ -178,19 +178,19 @@ $$\widetilde{y}^{2}=\arg \max _{y \in Y} w \cdot \phi\left(x^{2}, y\right)
 $$
 如下图，在上一步中得到的 w 上，找到目标点：
 
-![](http://ww2.sinaimg.cn/large/006tNc79ly1g4grv29v2hj307s08u744.jpg)
+![](https://github.com/CaoTouChan/ctc_imgs/raw/master/006tNc79ly1g4grv29v2hj307s08u744.jpg)
 
 3. 更新
 
 $$\begin{aligned} \text { If } \tilde{y}^{2} & \neq \hat{y}^{2}, \text { update } \mathbf{w} \\ & w \rightarrow w+\phi\left(x^{2}, \hat{y}^{2}\right)-\phi\left(x^{2}, \widetilde{y}^{2}\right) \end{aligned}
 $$
 
-![](http://ww4.sinaimg.cn/large/006tNc79ly1g4grvb7vtnj306806rdfo.jpg)
+![](https://github.com/CaoTouChan/ctc_imgs/raw/master/006tNc79ly1g4grvb7vtnj306806rdfo.jpg)
 * **步骤 3**
 
 之后重新遍历样本，发现不再更新，故结束循环。
 
-![](http://ww2.sinaimg.cn/large/006tNc79ly1g4grvmah9ij30h30a6dfx.jpg)
+![](https://github.com/CaoTouChan/ctc_imgs/raw/master/006tNc79ly1g4grvmah9ij30h30a6dfx.jpg)
 
 ## 参考资料
 

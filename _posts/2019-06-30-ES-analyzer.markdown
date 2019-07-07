@@ -16,7 +16,7 @@ date: 2019-06-30 14:30:11.000000000 +09:00
 
 * Token Filters ： 去除停用词、大小写改动之类
 
-![](http://ww2.sinaimg.cn/large/006tNc79ly1g4j6mqzjqzj30l706mdfv.jpg)
+![](https://github.com/CaoTouChan/ctc_imgs/raw/master/006tNc79ly1g4j6mqzjqzj30l706mdfv.jpg)
 
 
 ## 分类

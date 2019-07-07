@@ -59,7 +59,7 @@ $$
 $$X : Image \rightarrow Y : Bounding Box
 $$
 
-![wuxin](http://ww1.sinaimg.cn/large/006tNc79gy1g4goughh89j31hs0u07dj.jpg)
+![](https://github.com/CaoTouChan/ctc_imgs/raw/master/006tNc79gy1g4goughh89j31hs0u07dj.jpg)
 
 以上，图片就是我们的输入 $x$，而$y$ 就是我们的 bounding box。那么 $F(x, y)$ 就是将$x$中$y$的范围作为 “无心小和尚” 的正确性。所以，红框（无心）对应的 $F_红(x, y)$ 会高于蓝框（蓝框）对应的 $F_蓝(x, y)$。
 
@@ -106,7 +106,7 @@ $$
 
 1.  `F(x, y)` 怎么定义
 
-![定义](http://ww3.sinaimg.cn/large/006tNc79gy1g4govwlsbxj313a0iaabw.jpg)
+![](https://github.com/CaoTouChan/ctc_imgs/raw/master/006tNc79gy1g4govwlsbxj313a0iaabw.jpg)
 
 2. `arg max` 问题如何解决
 
@@ -127,7 +127,7 @@ $${(x^1, \hat{y}^1), ..., (x^r, \hat{y}^r), ...}$$
 
 我们要找到 `F(x, y)` 使得：
 
-![](http://ww2.sinaimg.cn/large/006tNc79gy1g4gox49bugj30yy0cg3yt.jpg)
+![](https://github.com/CaoTouChan/ctc_imgs/raw/master/006tNc79gy1g4gox49bugj30yy0cg3yt.jpg)
 
 参考链接：
 1. [台灣大學 李宏毅 《Structured Learning: Introduction》](https://www.youtube.com/watch?v=HfPw40JPays&list=PLJV_el3uVTsNHQKxv49vpq7NSn-zim18V&index=2) （需要梯子）

@@ -33,7 +33,6 @@ tags: cs224u stanford 关系抽取 远程监督
 3. 根据扩展规则扩展三元组
 4. 进一步对三元组实体和触发词进行关系抽取
 
-<!-- ![](http://ww2.sinaimg.cn/large/006tNc79ly1g4k7qfhdbzj310q0lo0u9.jpg) -->
 ![](https://github.com/CaoTouChan/ctc_imgs/raw/master/006tNc79ly1g4k7qfhdbzj310q0lo0u9.jpg)
 
 图片来源：[徐阿衡的博客](http://www.shuang0420.com/2018/09/15/%E7%9F%A5%E8%AF%86%E6%8A%BD%E5%8F%96-%E5%AE%9E%E4%BD%93%E5%8F%8A%E5%85%B3%E7%B3%BB%E6%8A%BD%E5%8F%96/)
@@ -70,7 +69,7 @@ tags: cs224u stanford 关系抽取 远程监督
 
 - CR-CNN ([Santos et. al Computer Science 2015](https://arxiv.org/pdf/1504.06580.pdf))
 
-![](http://ww2.sinaimg.cn/large/006tNc79ly1g4k9ojhqv1j308e0epjrm.jpg)
+![](https://github.com/CaoTouChan/ctc_imgs/raw/master/006tNc79ly1g4k9ojhqv1j308e0epjrm.jpg)
 
 word embedding + position embedding、6 个卷积核、max pooling 生成 sentence vector，与关系向量做点积求相似度。
 
@@ -87,7 +86,7 @@ $$
 
 - Att-CNN ([Relation Classification via Multi-Level Attention CNNs](http://iiis.tsinghua.edu.cn/~weblt/papers/relation-classification.pdf))
 
-![](http://ww3.sinaimg.cn/large/006tNc79ly1g4k9uunlpgj30nu0gcdh9.jpg)
+![](https://github.com/CaoTouChan/ctc_imgs/raw/master/006tNc79ly1g4k9uunlpgj30nu0gcdh9.jpg)
 
 使用两层 Attention —— 一个是对两个实体的注意力，另一个是用 attention pooling 代替 max pooling （加强相关性强的词的权重）。
 
@@ -95,13 +94,13 @@ $$
 
 BiLSTM + Attention 做关系分类任务。
 
-![](http://ww4.sinaimg.cn/large/006tNc79ly1g4k9zy9vn2j30vh0ekdgr.jpg)
+![](https://github.com/CaoTouChan/ctc_imgs/raw/master/006tNc79ly1g4k9zy9vn2j30vh0ekdgr.jpg)
 
 - 评测
 
 各方法在 SemEval-2010 Task 8 上的评测：
 
-![](http://ww3.sinaimg.cn/large/006tNc79ly1g4ka1i7hyuj315u0ne0vs.jpg)
+![](https://github.com/CaoTouChan/ctc_imgs/raw/master/006tNc79ly1g4ka1i7hyuj315u0ne0vs.jpg)
 
 2. **Joint Model** ：实体识别和关系分类的过程 **共同优化**
 
@@ -109,7 +108,7 @@ BiLSTM + Attention 做关系分类任务。
 
 实体识别和关系分类的参数共享，判断过程没有进行交互。
 
-![](http://ww1.sinaimg.cn/large/006tNc79ly1g4ka58dl61j30s90e3q3r.jpg)
+![](https://github.com/CaoTouChan/ctc_imgs/raw/master/006tNc79ly1g4ka58dl61j30s90e3q3r.jpg)
 
 从上图可以看出有三个表示层：
 
@@ -121,7 +120,7 @@ BiLSTM + Attention 做关系分类任务。
 
 - 评测
 
-![](http://ww4.sinaimg.cn/large/006tNc79ly1g4kat7oqqoj30bj071t8z.jpg)
+![](https://github.com/CaoTouChan/ctc_imgs/raw/master/006tNc79ly1g4kat7oqqoj30bj071t8z.jpg)
 
 直觉上 pipeline 会传递误差，但是上图表明 Joint Model 未必起作用，但是评测结果表明外部知识可以对训练产生正面影响。
 
@@ -133,7 +132,7 @@ BiLSTM + Attention 做关系分类任务。
 
 用少量实例作为初始种子(seed tuples)的集合，然后利用 pattern 学习方法进行学习，迭代抽取实例，然后从新实例中学习新 pattern 并扩充 pattern 集合，寻找和发现新的潜在关系三元组。
 
-![](http://ww2.sinaimg.cn/large/006tNc79ly1g4kb9ab0ljj30sc0gzdhp.jpg)
+![](https://github.com/CaoTouChan/ctc_imgs/raw/master/006tNc79ly1g4kb9ab0ljj30sc0gzdhp.jpg)
 
 这方法对初始给定的种子集敏感，存在语义漂移问题，准确率较低，缺乏对每一个结果的置信度的计算。
 
@@ -143,7 +142,7 @@ BiLSTM + Attention 做关系分类任务。
 
 - APCNNs (PCNN + Sentence-level Attention) （[Kang Liu et.al AI 2017](https://pdfs.semanticscholar.org/b8da/823ad81e3b8e5b80d82f86129fdb1d9132e7.pdf?_ga=2.214235987.519572625.1561962607-1203158446.1561962607)）
 
-![](http://ww3.sinaimg.cn/large/006tNc79ly1g4kbqekmqmj30sw0cygms.jpg)
+![](https://github.com/CaoTouChan/ctc_imgs/raw/master/006tNc79ly1g4kbqekmqmj30sw0cygms.jpg)
 
 1. PCNN : 分段池化以更加精准刻画不同上下文对句向量的贡献，参考 [Distant Supervision for Relation Extraction via Piecewise Convolutional Neural Networks](http://www.emnlp2015.org/proceedings/EMNLP/pdf/EMNLP203.pdf)。
 2. Sentence-level Attention : 句子层面的 attention 对 bag 里所有句子进行加权作为 bag 的特征向量，参考 [Neural Relation Extraction with Selective Attention over Instances](http://www.aclweb.org/anthology/P16-1200)。权重公式 ： $$\begin{equation}

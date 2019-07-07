@@ -7,13 +7,13 @@ date: 2019-05-27 15:50:01.000000000 +09:00
 
 序列标记问题，是一个序列到另一个序列的映射，表达为下式：
 
-![](http://ww3.sinaimg.cn/large/006tNc79gy1g4gtpu974wj30dj07sdft.jpg)
+![](https://github.com/CaoTouChan/ctc_imgs/raw/master/006tNc79gy1g4gtpu974wj30dj07sdft.jpg)
 
 序列标记有很多应用，比如 POS tagging、Morphosyntactic Attributes、Named Entity Recognition、Tokenization、Code switching 和 Dialogue acts 等。
 
 以 POS tagging 为例，如下：
 
-![](http://ww2.sinaimg.cn/large/006tNc79gy1g4gtq3wc0pj30hr07r3yw.jpg)
+![](https://github.com/CaoTouChan/ctc_imgs/raw/master/006tNc79gy1g4gtq3wc0pj30hr07r3yw.jpg)
 
 ## Hidden Markov Model (HMM)
 
@@ -24,19 +24,19 @@ date: 2019-05-27 15:50:01.000000000 +09:00
 1. 根据语法生成 POS 序列
 2. 根据 POS 序列生成句子 （句子的单词从词典抽取）
 
-![](http://ww4.sinaimg.cn/large/006tNc79gy1g4gtqbwu95j309i07gaa1.jpg)
+![](https://github.com/CaoTouChan/ctc_imgs/raw/master/006tNc79gy1g4gtqbwu95j309i07gaa1.jpg)
 
 举例来说，假设有以下 POS 转化关系（马尔柯夫链）：
 
-![](http://ww1.sinaimg.cn/large/006tNc79gy1g4gtqilpboj30k70dydgs.jpg)
+![](https://github.com/CaoTouChan/ctc_imgs/raw/master/006tNc79gy1g4gtqilpboj30k70dydgs.jpg)
 
 步骤二转化概率如下：
 
-![](http://ww2.sinaimg.cn/large/006tNc79gy1g4gtqp6kfzj30je0dawf3.jpg)
+![](https://github.com/CaoTouChan/ctc_imgs/raw/master/006tNc79gy1g4gtqp6kfzj30je0dawf3.jpg)
 
 综上，可描述为：
 
-![](http://ww3.sinaimg.cn/large/006tNc79gy1g4gtqvpdmcj30g00aojrn.jpg)
+![](https://github.com/CaoTouChan/ctc_imgs/raw/master/006tNc79gy1g4gtqvpdmcj30g00aojrn.jpg)
 
 不失一般性的，我们有：
 
@@ -57,7 +57,7 @@ $$
 $$P(x, y)$$
 ：
 
-![](http://ww1.sinaimg.cn/large/006tNc79gy1g4gtrckhy9j30ip08174n.jpg)
+![](https://github.com/CaoTouChan/ctc_imgs/raw/master/006tNc79gy1g4gtrckhy9j30ip08174n.jpg)
 
 ### 用 HMM 处理 POS tagging
 
@@ -67,7 +67,7 @@ $$x$$
 $$y$$
  :
 
-![](http://ww3.sinaimg.cn/large/006tNc79gy1g4gtrnoxp5j308105d748.jpg)
+![](https://github.com/CaoTouChan/ctc_imgs/raw/master/006tNc79gy1g4gtrnoxp5j308105d748.jpg)
 
 $$\begin{aligned} y &=\arg \max _{y \in Y} P(y | x) \\ &=\arg \max _{y \in Y} \frac{P(x, y)}{P(x)} \\ &=\arg \max _{y \in \mathbb{Y}} P(x, y) \end{aligned}
 $$
@@ -122,7 +122,7 @@ $$(x, \hat{y}) : P(x, \hat{y})>P(x, y)$$
 
 但是这一点，HMM 无法保证。考虑以下例子：
 
-![](http://ww2.sinaimg.cn/large/006tNc79gy1g4gtrwybg0j30j505p74d.jpg)
+![](https://github.com/CaoTouChan/ctc_imgs/raw/master/006tNc79gy1g4gtrwybg0j30j505p74d.jpg)
 
 通过计算，会得到最终路径是：N-> V -> A
 
@@ -197,7 +197,7 @@ $$N_{s, t}(x, y)$$
 $$(x, y)$$
 ：
 
-![](http://ww2.sinaimg.cn/large/006tNc79gy1g4gts7bz0aj30li0683yk.jpg)
+![](https://github.com/CaoTouChan/ctc_imgs/raw/master/006tNc79gy1g4gts7bz0aj30li0683yk.jpg)
 
 则：
 

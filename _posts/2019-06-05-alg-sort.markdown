@@ -7,35 +7,35 @@ date: 2019-06-05 01:02:04.000000000 +09:00
 
 ### 冒泡排序
 
-![](http://ww2.sinaimg.cn/large/006tNc79ly1g4hthrr1wzj30gu0az75s.jpg)
+![](https://github.com/CaoTouChan/ctc_imgs/raw/master/006tNc79ly1g4hthrr1wzj30gu0az75s.jpg)
 
 ### 插入排序
 
-![](http://ww2.sinaimg.cn/large/006tNc79ly1g4htiakjjmj30950auta1.jpg)
+![](https://github.com/CaoTouChan/ctc_imgs/raw/master/006tNc79ly1g4htiakjjmj30950auta1.jpg)
 
 ### 选择排序
 
-![](http://ww2.sinaimg.cn/large/006tNc79ly1g4htih8x6mj309d071wf5.jpg)
+![](https://github.com/CaoTouChan/ctc_imgs/raw/master/006tNc79ly1g4htih8x6mj309d071wf5.jpg)
 
 ### 归并排序
 
-![](http://ww2.sinaimg.cn/large/006tNc79ly1g4htiop01yj309507pdh1.jpg)
+![](https://github.com/CaoTouChan/ctc_imgs/raw/master/006tNc79ly1g4htiop01yj309507pdh1.jpg)
 
 ### 快速排序
 
-![](http://ww4.sinaimg.cn/large/006tNc79ly1g4htix69nkj309008pq36.jpg)
+![](https://github.com/CaoTouChan/ctc_imgs/raw/master/006tNc79ly1g4htix69nkj309008pq36.jpg)
 
 ### 桶排序
 
-![](http://ww4.sinaimg.cn/large/006tNc79ly1g4htj6ba46j309705t0t8.jpg)
+![](https://github.com/CaoTouChan/ctc_imgs/raw/master/006tNc79ly1g4htj6ba46j309705t0t8.jpg)
 
 ### 计数排序
 
-![](http://ww3.sinaimg.cn/large/006tNc79ly1g4htjdp50qj30c00fn75y.jpg)
+![](https://github.com/CaoTouChan/ctc_imgs/raw/master/006tNc79ly1g4htjdp50qj30c00fn75y.jpg)
 
 ### 基数排序
 
-![](http://ww1.sinaimg.cn/large/006tNc79ly1g4htjka75qj309a04x749.jpg)
+![](https://github.com/CaoTouChan/ctc_imgs/raw/master/006tNc79ly1g4htjka75qj309a04x749.jpg)
 
 ## 排序算法比较
 
@@ -77,7 +77,7 @@ if (a[j] > value) {
 
 [**希尔排序**](https://zh.wikipedia.org/wiki/%E5%B8%8C%E5%B0%94%E6%8E%92%E5%BA%8F)  是简单插入排序经过改进之后的一个更高效的版本，也称为缩小增量排序。它把记录按下标的一定增量分组，对每组使用直接插入排序算法排序；随着增量逐渐减少，每组包含的关键词越来越多，当增量减至1时，整个文件恰被分成一组，算法便终止。其最坏时间复杂度依然为 $$O(n^2)$$，一些经过优化的增量序列如 Hibbard 经过复杂证明可使得最坏时间复杂度为 $$O(n^{3/2})$$。
 
-![](http://ww3.sinaimg.cn/large/006tNc79ly1g4htjuxowcj30hc0jpq4j.jpg)
+![](https://github.com/CaoTouChan/ctc_imgs/raw/master/006tNc79ly1g4htjuxowcj30hc0jpq4j.jpg)
 > [图片来源](https://www.cnblogs.com/chengxiao/p/6104371.html)
 
 3. 如何根据年龄给 100 万用户排序？

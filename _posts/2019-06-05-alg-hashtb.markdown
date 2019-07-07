@@ -5,7 +5,7 @@ date: 2019-06-05 01:02:07.000000000 +09:00
 ---
 ## 结构
 
-![](http://ww2.sinaimg.cn/large/006tNc79ly1g4htxyonjfj30dh08uq38.jpg)
+![](https://github.com/CaoTouChan/ctc_imgs/raw/master/006tNc79ly1g4htxyonjfj30dh08uq38.jpg)
 
 ## 散列冲突
 
@@ -23,7 +23,7 @@ date: 2019-06-05 01:02:07.000000000 +09:00
 
 3. 散列冲突的解决方法：基于链表的散列冲突处理方法比较适合存储大对象、大数据量的散列表，而且，比起开放寻址法，它更加灵活，支持更多的优化策略，比如用红黑树代替链表。
 
-![](http://ww2.sinaimg.cn/large/006tNc79ly1g4hty81motj3060060t8p.jpg)
+![](https://github.com/CaoTouChan/ctc_imgs/raw/master/006tNc79ly1g4hty81motj3060060t8p.jpg)
 
 4. Java 中的 HashMap
 
@@ -58,7 +58,7 @@ public int hashCode() {
 
 实现缓存的添加、删除、查找的时间复杂度都是 O(1)。
 
-![](http://ww4.sinaimg.cn/large/006tNc79ly1g4htyfyu04j30cd087mxp.jpg)
+![](https://github.com/CaoTouChan/ctc_imgs/raw/master/006tNc79ly1g4htyfyu04j30cd087mxp.jpg)
 
 ## 算法题
 

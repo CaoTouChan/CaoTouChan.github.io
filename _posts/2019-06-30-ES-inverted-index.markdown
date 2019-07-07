@@ -15,7 +15,7 @@ tags: 倒排索引 全文搜索
 
 ## 核心组成
 
-![](http://ww1.sinaimg.cn/large/006tNc79ly1g4j674gktkj30n9067dfv.jpg)
+![](https://github.com/CaoTouChan/ctc_imgs/raw/master/006tNc79ly1g4j674gktkj30n9067dfv.jpg)
 
 倒排索引包含两部分：
 
@@ -23,7 +23,7 @@ tags: 倒排索引 全文搜索
 
 * 倒排列表 （ Posting List ）：记录单词对应文档集合，由倒排索引项 （ Posting ） 组成 —— 文档 ID、词频 TF、位置 Position、位移 offset
 
-![](http://ww3.sinaimg.cn/large/006tNc79ly1g4j6bh8wsbj30n807vdfv.jpg)
+![](https://github.com/CaoTouChan/ctc_imgs/raw/master/006tNc79ly1g4j6bh8wsbj30n807vdfv.jpg)
 
 ## 参考资料和相关阅读
 

@@ -36,19 +36,19 @@ E -->|否|B
 
 以往我们剪枝后，就重新随机初始化参数，如下图路线 红 -> 紫 -> 绿，但是效果并不好。但是，如果我们剪枝后将原始随机初始化的参数 copy 过来再训练，发现效果还不错。
 
-![](http://ww4.sinaimg.cn/large/006tNc79ly1g4gwoplwqgj314f0u00wx.jpg)
+![](https://github.com/CaoTouChan/ctc_imgs/raw/master/006tNc79ly1g4gwoplwqgj314f0u00wx.jpg)
 
 Lottery Ticket Hypothesis ([Jonathan Frankle et al., 2018]) 认为，若将整个大的网络看做多个小的网络，其中有些小网络可以训练，有的无法训练。于是我们 copy 原始参数会一定程度上拷贝成功的经验。
 
 但是，[Zhuang Liu et al., 2018] 对此提出了不同的观点，其使用真正的随机初始化代替 Lottery Ticket Hypothesis 中提到的方法，发现效果并不差：
 
-![](http://ww3.sinaimg.cn/large/006tNc79gy1g4gwpaa62qj30x4088dh8.jpg)
+![](https://github.com/CaoTouChan/ctc_imgs/raw/master/006tNc79gy1g4gwpaa62qj30x4088dh8.jpg)
 
 ### Practical Issue
 
 * 权值剪枝（ weight pruning ）
 
-![](http://ww4.sinaimg.cn/large/006tNc79gy1g4gwpil5mtj30ty0cg0tm.jpg)
+![](https://github.com/CaoTouChan/ctc_imgs/raw/master/006tNc79gy1g4gwpil5mtj30ty0cg0tm.jpg)
 
 权值剪枝后会使得网络变得不规则，难以实现，也难以加速（因为 GPU 加速也是进行矩阵运算）。
 
@@ -56,11 +56,11 @@ Lottery Ticket Hypothesis ([Jonathan Frankle et al., 2018]) 认为，若将整�
 
 [Wei Wen  et al., 2016] 对其进行评估，效果显示剪枝 90%+ 的情况下，性能只是下降2%
 
-![](http://ww3.sinaimg.cn/large/006tNc79gy1g4gwpr3qh3j30y00b4mye.jpg)
+![](https://github.com/CaoTouChan/ctc_imgs/raw/master/006tNc79gy1g4gwpr3qh3j30y00b4mye.jpg)
 
 * 神经元剪枝（ Neuron pruning ）
 
-![](http://ww2.sinaimg.cn/large/006tNc79gy1g4gwpyho2gj30ui0c275b.jpg)
+![](https://github.com/CaoTouChan/ctc_imgs/raw/master/006tNc79gy1g4gwpyho2gj30ui0c275b.jpg)
 
 很明显，剪枝后是规则的网络模型，容易实现，也易于加速。
 
@@ -70,11 +70,11 @@ Lottery Ticket Hypothesis ([Jonathan Frankle et al., 2018]) 认为，若将整�
 
 [Geoffrey Hinton et al., 2015] 提出 Knowledge Distillation 的框架进行模型压缩。其主要思想是通过一个 Teacher - Student 的结构，将模型集合中的知识提炼到单个模型中。如下图，这个模型让人惊喜的地方在于，即便 smaller network 里边没有接触到 "7" 这个训练样本，也有一定的机会预测出来，因为 teacher 网络中是一个包含概率的网络，这一点可能会被 student 网络学习到。
 
-![](http://ww1.sinaimg.cn/large/006tNc79gy1g4gwqkihzfj30ft08yjrl.jpg)
+![](https://github.com/CaoTouChan/ctc_imgs/raw/master/006tNc79gy1g4gwqkihzfj30ft08yjrl.jpg)
 
 在 Kaggle 比赛中，我们经常会集成多个模型来进行预测。但是工业上不可能同时跑这么多个模型，Knowledge Distillation 使得 smaller network 一定程度上实现了集成学习。
 
-![](http://ww2.sinaimg.cn/large/006tNc79gy1g4gwqsmrvwj30g8097aaa.jpg)
+![](https://github.com/CaoTouChan/ctc_imgs/raw/master/006tNc79gy1g4gwqsmrvwj30g8097aaa.jpg)
 
 ### Temperature
 
@@ -100,19 +100,19 @@ $$
 
 通过 Kmeans 之类的算法，将权值聚合。那么我们将可以使用 Table 中的四个数来表达表中的值，比如说橙色表示的几个数都是 (-3.4 -5 .0) / 2 = - 4.2。
 
-![](http://ww2.sinaimg.cn/large/006tNc79gy1g4gwr087ewj30gg04pq33.jpg)
+![](https://github.com/CaoTouChan/ctc_imgs/raw/master/006tNc79gy1g4gwr087ewj30gg04pq33.jpg)
 
 3. 更进一步的，通过哈夫曼编码之类的算法，可以用较少的比特表示频繁的簇，用更多的比特表示稀有的簇
 
 4. Binary Weights
 
-![](http://ww2.sinaimg.cn/large/006tNc79gy1g4gwr81omzj30g3082q33.jpg)
+![](https://github.com/CaoTouChan/ctc_imgs/raw/master/006tNc79gy1g4gwr81omzj30g3082q33.jpg)
 
 如上图，根据最近的 “点” （ network with binary weights ） 进行更新直到满意。
 
 下图是 Binary Connect 的效果：
 
-![](http://ww2.sinaimg.cn/large/006tNc79gy1g4gwrfizyqj30fq084my1.jpg)
+![](https://github.com/CaoTouChan/ctc_imgs/raw/master/006tNc79gy1g4gwrfizyqj30fq084my1.jpg)
 
 > 参考 [2] [3] [4]
 
@@ -120,19 +120,19 @@ $$
 
 从结构设计上入手来压缩模型，可能是业界比较实用的方法，其基本框架如下：
 
-![](http://ww3.sinaimg.cn/large/006tNc79gy1g4gwruacsbj30g409hdfx.jpg)
+![](https://github.com/CaoTouChan/ctc_imgs/raw/master/006tNc79gy1g4gwruacsbj30g409hdfx.jpg)
 
 在两层之间插入一层来达到压缩模型的效果。以标准 CNN 来举个例子：
 
-![](http://ww1.sinaimg.cn/large/006tNc79gy1g4gws3ayqmj30f40bg3zb.jpg)
+![](https://github.com/CaoTouChan/ctc_imgs/raw/master/006tNc79gy1g4gws3ayqmj30f40bg3zb.jpg)
 
 如上图，我们需要 72 个参数。改进后：
 
-![](http://ww2.sinaimg.cn/large/006tNc79gy1g4gwsbcfxwj30f20b5dg7.jpg)
+![](https://github.com/CaoTouChan/ctc_imgs/raw/master/006tNc79gy1g4gwsbcfxwj30f20b5dg7.jpg)
 
-![](http://ww3.sinaimg.cn/large/006tNc79gy1g4gwslhl2ij30fg0bp74r.jpg)
+![](https://github.com/CaoTouChan/ctc_imgs/raw/master/006tNc79gy1g4gwslhl2ij30fg0bp74r.jpg)
 
-![](http://ww3.sinaimg.cn/large/006tNc79gy1g4gwsxvsljj30gb0c4wez.jpg)
+![](https://github.com/CaoTouChan/ctc_imgs/raw/master/006tNc79gy1g4gwsxvsljj30gb0c4wez.jpg)
 
 相关模型参考 [5] [6] [7] [8]
 
@@ -144,13 +144,13 @@ $$
 
 2. 中间层加入分类器，在资源不足的情况下使用前边的分类器，如下图：
 
-![](http://ww3.sinaimg.cn/large/006tNc79gy1g4gwt7d5l4j307w056mx3.jpg)
+![](https://github.com/CaoTouChan/ctc_imgs/raw/master/006tNc79gy1g4gwt7d5l4j307w056mx3.jpg)
 
 但是，一般情况下，网络具备泛化能力和底层抽出的简单特征有关，如果在底层加入分类器，相当于迫使其放弃简单特征，这种方式会造成一定的问题。参考 [Gao Huang et al., 2015]
 
-![](http://ww1.sinaimg.cn/large/006tNc79gy1g4gwtg541lj30lp09iwfo.jpg)
+![](https://github.com/CaoTouChan/ctc_imgs/raw/master/006tNc79gy1g4gwtg541lj30lp09iwfo.jpg)
 
-![](http://ww3.sinaimg.cn/large/006tNc79gy1g4gwtnjxs4j30lp09st9s.jpg)
+![](https://github.com/CaoTouChan/ctc_imgs/raw/master/006tNc79gy1g4gwtnjxs4j30lp09st9s.jpg)
 
 
 ## 参考链接

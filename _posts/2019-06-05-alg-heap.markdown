@@ -19,13 +19,13 @@ $$i * 2 + 1$$
 $$\frac{i}{2} $$
 。
 
-![](http://ww4.sinaimg.cn/large/006tNc79ly1g4huhn2kbsj30vq0f0aa3.jpg)
+![](https://github.com/CaoTouChan/ctc_imgs/raw/master/006tNc79ly1g4huhn2kbsj30vq0f0aa3.jpg)
 
 ## 插入元素
 
 把新插入的元素放到堆的最后，之后进行调整，让其重新满足堆的特性 —— 这个过程叫做 **堆化**（heapify）。
 
-![](http://ww4.sinaimg.cn/large/006tNc79ly1g4huisnha4j30vq0lkwfc.jpg)
+![](https://github.com/CaoTouChan/ctc_imgs/raw/master/006tNc79ly1g4huisnha4j30vq0lkwfc.jpg)
 
 核心代码如下：
 
@@ -44,7 +44,7 @@ $$\frac{i}{2} $$
 
 ## 删除元素
 
-![](http://ww4.sinaimg.cn/large/006tNc79ly1g4hujhnz4ij30vq0nsmy6.jpg)
+![](https://github.com/CaoTouChan/ctc_imgs/raw/master/006tNc79ly1g4hujhnz4ij30vq0nsmy6.jpg)
 
 ```
 public void removeMax() {
@@ -99,7 +99,7 @@ $$O(n log n)$$
 $$O(n)$$
  。
 
-![](http://ww3.sinaimg.cn/large/006tNc79ly1g4hujzq6kaj30vq0l73yv.jpg)
+![](https://github.com/CaoTouChan/ctc_imgs/raw/master/006tNc79ly1g4hujzq6kaj30vq0l73yv.jpg)
 
 从上图可知，对每个非叶子节点的高度求和：
 
@@ -181,7 +181,7 @@ public static void sort(int[] a, int n) {
 
 使用一个大顶堆（保存前半部分）和一个小顶堆（保存后半部分）来保存数据。实际上这个方法可以用来求取任何比例位置的数字。
 
-![](http://ww3.sinaimg.cn/large/006tNc79ly1g4hul5holtj30vq0kpjrz.jpg)
+![](https://github.com/CaoTouChan/ctc_imgs/raw/master/006tNc79ly1g4hul5holtj30vq0kpjrz.jpg)
 
 
 ## 算法题

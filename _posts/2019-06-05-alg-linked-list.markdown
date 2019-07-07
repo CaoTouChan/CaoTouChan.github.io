@@ -6,13 +6,13 @@ date: 2019-06-05 01:01:01.000000000 +09:00
 
 ## 链表结构
 
-![](http://ww4.sinaimg.cn/large/006tNc79ly1g4hslsz71zj30h4061mxb.jpg)
+![](https://github.com/CaoTouChan/ctc_imgs/raw/master/006tNc79ly1g4hslsz71zj30h4061mxb.jpg)
 
-![](http://ww3.sinaimg.cn/large/006tNc79ly1g4hsm586h2j30h5062wen.jpg)
+![](https://github.com/CaoTouChan/ctc_imgs/raw/master/006tNc79ly1g4hsm586h2j30h5062wen.jpg)
 
-![](http://ww4.sinaimg.cn/large/006tNc79ly1g4hsmejoe8j30h6065weo.jpg)
+![](https://github.com/CaoTouChan/ctc_imgs/raw/master/006tNc79ly1g4hsmejoe8j30h6065weo.jpg)
 
-![](http://ww2.sinaimg.cn/large/006tNc79ly1g4hsml8sv9j30gw07kq3a.jpg)
+![](https://github.com/CaoTouChan/ctc_imgs/raw/master/006tNc79ly1g4hsml8sv9j30gw07kq3a.jpg)
 
 
 ## 时间复杂度以及双向链表的优势
@@ -150,7 +150,7 @@ class Solution(object):
 
 获取两个单项链表的交点（如下图，返回 8），不相交则返回 NULL。
 
-![](http://ww4.sinaimg.cn/large/006tNc79ly1g4hsmvvf4oj30cd03umx1.jpg)
+![](https://github.com/CaoTouChan/ctc_imgs/raw/master/006tNc79ly1g4hsmvvf4oj30cd03umx1.jpg)
 
 设置指针 pa 和 pb 指向各自链表的访问位置，开始遍历链表。
 
