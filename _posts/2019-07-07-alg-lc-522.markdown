@@ -1,0 +1,39 @@
+---
+layout: post
+title: 解题 - LeetCode 522 Longest Uncommon Subsequence II
+date: 2019-07-07 01:02:01.000000000 +09:00
+tags: 算法 LeetCode String
+---
+
+## 题目
+
+[原题链接](https://leetcode.com/problems/longest-uncommon-subsequence-ii/)
+
+题目概要大抵就是说，给出字符串列表 `strs` ，找出一个最长非公共子串（Longest Uncommon Subsequence, LUS），这个 LUS 不是任何 `strs` 中字符串的子串（除了本身）。返回 LUS 的长度。
+
+其中，**子串** 的定义是 ： a sequence that can be derived from one sequence by deleting some characters without changing the order of the remaining elements. Trivially, any string is a subsequence of itself and an empty string is a subsequence of any string.
+
+Example 1:
+
+```
+Input: "aba", "cdc", "eae"
+Output: 3
+```
+
+## 解题思路和代码
+
+首先按照长度降序排序，然后从 0 开始访问字符串列表，检测是否符合 LUS 的条件，符合则返回其长度。
+
+```python
+class Solution(object):
+    def findLUSlength(self, strs):
+        def issubsequence(s, t):
+            t = iter(t)
+            return all(c in t for c in s)
+
+        for s in sorted(strs, key=len, reverse=True):
+            if sum(issubsequence(s, t) for t in strs) == 1:
+                return len(s)
+
+        return -1
+```
