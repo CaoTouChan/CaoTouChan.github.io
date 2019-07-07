@@ -33,7 +33,8 @@ tags: cs224u stanford 关系抽取 远程监督
 3. 根据扩展规则扩展三元组
 4. 进一步对三元组实体和触发词进行关系抽取
 
-![](http://ww2.sinaimg.cn/large/006tNc79ly1g4k7qfhdbzj310q0lo0u9.jpg)
+<!-- ![](http://ww2.sinaimg.cn/large/006tNc79ly1g4k7qfhdbzj310q0lo0u9.jpg) -->
+![](https://github.com/CaoTouChan/ctc_imgs/raw/master/006tNc79ly1g4k7qfhdbzj310q0lo0u9.jpg)
 
 图片来源：[徐阿衡的博客](http://www.shuang0420.com/2018/09/15/%E7%9F%A5%E8%AF%86%E6%8A%BD%E5%8F%96-%E5%AE%9E%E4%BD%93%E5%8F%8A%E5%85%B3%E7%B3%BB%E6%8A%BD%E5%8F%96/)
 
