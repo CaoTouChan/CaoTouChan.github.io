@@ -122,7 +122,12 @@ tags: 信息抽取 命名实体识别
 1. 模式相对于当前 tuple 集的性能
 2. 模式在文档集合中生成的匹配数量方面的生产率
 
-具体来说，
+具体来说，对于给定的文档 $$\mathscr{D}$$、现有 tuple 组 $$T$$、新发现的 pattern $$p$$，那么我们需要两个元素：
+
+1. $$hints$$ ： 
+2. $$finds$$ ： 
+
+$$Conf_{R l o g F}(p)=\frac{h i t s_{p}}{finds_{p}} \times \log \left(finds_{p}\right)$$
 
 ### 远程监督学习方法
 
