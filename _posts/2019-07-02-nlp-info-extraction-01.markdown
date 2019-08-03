@@ -33,6 +33,7 @@ tags: 信息抽取 命名实体识别
 标准的 NER 任务是将它视为一项序列标记任务：对每一个 word 输出一个标记。常用的标记方式有 IOB tagging ，比如：
 
 > 川    普  爱  北  京  天  安  门
+>
 > B-PER I-PER   O   B-LOC   I-LOC   I-LOC   I-LOC   I-LOC
 
 一般来说，会训练一个序列分类器来完成这项任务，常用 **MEMM/CRF**、 **bi-LSTM**、 或者**混合**使用。
