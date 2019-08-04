@@ -141,7 +141,28 @@ $$Conf_{R l o g F}(p)=\frac{h i t s_{p}}{finds_{p}} \times \log \left(finds_{p}\
 
 ### 无监督学习方法
 
+无监督学习方法是为了从网络中的海量的无标记样本中获取关系，一般称为 open information extraction 或者 Open IE。这种抽取方式下，关系一般是以动词开头的简单字符串。
+
+比如说，ReVerb 系统 (Fader et al., 2011) 分 4 步抽取句子 s 的关系：
+
+1. 在 s 上运行 part-of-speech tagger 和 entity chunker
+2. 对于 s 中的每个动词，找到以动词开头并满足句法和词汇约束的最长词序列 w ，合并相邻的匹配
+3. 对于每个短语w，找到左边最近的名词短语 x （ x 不是关系代词，wh-word 或存在的 “there” ）、找到在右边最近的名词短语 y
+4. 使用置信度分类器 （比如 LR 之类的分类器） 将置信度 c 分配给关系 r =（x，w，y）并返回它。
+
 ### 评估关系抽取
+
+对于监督学习，评估方法有准确率、召回率、F-mesure 之类。
+
+对于半监督学习和无监督学习，因为样本量级太大无法手工标注，其评估方法会比较困难。
+
+一般来说，可以通过对输出进行随机采样然后进行手工标注再进行准确率评估。通常这种方法侧重于从文本主体中提取的元组而不是关系。也就是说，我们关心的是北京是否有一个大兴机场，而不是这被发现了多少次。其准确率评估方式如下：
+
+$$\begin{equation}
+\hat{P}=\frac{\# \text { of correctly extracted relation tuples in the sample }}{\text { total } \# \text { of extracted relation tuples in the sample. }}
+\end{equation}$$
+
+另一种为提供一些关于召回的信息的方法是：计算不同召回水平的精确度。对其输出的关系（通过概率或置信度）进行排序，分别计算前 1000、前 10,000、前 100,000 个的精确度。在每种情况下，随机抽取该集合样本，绘制精确率曲线以进行评估 —— 但没有办法直接评估召回率。
 
 ## 抽取时间
 
