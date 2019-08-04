@@ -135,6 +135,10 @@ $$Conf_{R l o g F}(p)=\frac{h i t s_{p}}{finds_{p}} \times \log \left(finds_{p}\
 
 ### 远程监督学习方法
 
+远程监督学习结合 Boostrapping 和监督学习，其从大型数据库中获取大量样本，创建大量噪声模式特征，然后将它们组合在有监督的分类器中，而不仅仅是少数种子。其基本流程如下：
+
+![](https://github.com/CaoTouChan/ctc_imgs/raw/master/kFqpGyolUogcDRiqmJZqNp7JnEqmwbO.png)
+
 ### 无监督学习方法
 
 ### 评估关系抽取
