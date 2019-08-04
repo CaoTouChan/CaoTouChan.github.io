@@ -122,12 +122,16 @@ tags: 信息抽取 命名实体识别
 1. 模式相对于当前 tuple 集的性能
 2. 模式在文档集合中生成的匹配数量方面的生产率
 
-具体来说，对于给定的文档 $$\mathscr{D}$$、现有 tuple 组 $$T$$、新发现的 pattern $$p$$，那么我们需要两个元素：
+具体来说，对于给定的文档 $$\mathscr{D}$$、现有 tuple 集合 $$T$$、新发现的 pattern $$p$$，那么我们需要两个因子：
 
-1. $$hints$$ ： 
-2. $$finds$$ ： 
+1. $$hints$$ ： the set of tuples in $$T$$ that $$p$$ matches while looking in $$\mathscr{D}$$
+2. $$finds$$ ： the total set of tuples that $$p$$ finds in $$\mathscr{D}$$
+
+下式权衡了上述两种因子 (Riloff and Jones, 1999) ：
 
 $$Conf_{R l o g F}(p)=\frac{h i t s_{p}}{finds_{p}} \times \log \left(finds_{p}\right)$$
+
+在 Boostrapping 过程中设置阈值有助于防止模型从目标关系上漂移。
 
 ### 远程监督学习方法
 
